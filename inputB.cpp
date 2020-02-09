@@ -24,7 +24,8 @@ void helloPrint()
 int main()
 {
 freopen("outputC.txt", "w+", stdout);
-    int a = 5 ; int b = 10 ;
+    int a = 5 ;
+ int b = 10 ;
     int ret = checkEvenOrOdd(a);
     helloPrint();
     int sum=0;

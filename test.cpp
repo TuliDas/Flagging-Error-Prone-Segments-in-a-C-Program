@@ -10,12 +10,12 @@ printf("line = %d\n",__LINE__);        goto EVEN;
     {
 printf("line = %d\n",__LINE__);        goto ODD;
     }
-printf("line = %d\n",__LINE__);    ODD:
+    ODD:
 printf("line = %d\n",__LINE__);        printf("%d is an odd number\n",num);
-        return 1;
-printf("line = %d\n",__LINE__);    EVEN:
+printf("line = %d\n",__LINE__);        return 1;
+    EVEN:
 printf("line = %d\n",__LINE__);        printf("%d is an even number\n",num);
-        return 1;
+printf("line = %d\n",__LINE__);        return 1;
 }
 void helloPrint()
 {
@@ -24,7 +24,8 @@ printf("line = %d\n",__LINE__);    printf("Hello World\n");
 int main()
 {
 printf("line = %d\n",__LINE__);freopen("outputC.txt", "w+", stdout);
-printf("line = %d\n",__LINE__);    int a = 5 ; int b = 10 ;
+printf("line = %d\n",__LINE__);    int a = 5 ;
+printf("line = %d\n",__LINE__); int b = 10 ;
     int ret = checkEvenOrOdd(a);
 printf("line = %d\n",__LINE__);    helloPrint();
 printf("line = %d\n",__LINE__);    int sum=0;
@@ -36,5 +37,5 @@ printf("line = %d\n",__LINE__);            sum+=j;
         }
     }
 printf("line = %d\n",__LINE__);    printf("Sum = %d\n",sum);
-    return 0;
+printf("line = %d\n",__LINE__);    return 0;
 }

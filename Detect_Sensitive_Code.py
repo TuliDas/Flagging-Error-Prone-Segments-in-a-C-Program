@@ -35,8 +35,18 @@ class Detect_Sensitive_Code:
                 f.write('\n')
                 done = 1
             else:
-                f.write(line)
-                f.write('\n')
+                res = re.findall("[^;]+;", line)
+                if re.search("for[\s]*[(].*[)]", line) == None:
+                    if len(res) > 0:
+                        for x in res:
+                            f.write(x)
+                            f.write('\n')
+                    else:
+                        f.write(line)
+                        f.write('\n')
+                else:
+                    f.write(line)
+                    f.write('\n')
 
             if( (line == "int main()" or line == "{") and done == 0 ):
                 write_statement += line
@@ -52,24 +62,35 @@ class Detect_Sensitive_Code:
         for line in lines:
             if(line==""):
                 continue
-            for word in line.split():
-                
-                #FUNCTION CHECK#
-                if self.utility.Function_Check(line):
-                    f.write(line)
-                    f.write('\n')
-                    break
-                #STATEMENT CHECK#
-                if(word[0]!="#" and word[0]!="{" and word[0]!="}" and word!="using" and (not word.startswith("if")) and (not word.startswith("else")) and (not word.startswith("for")) and (not word.startswith("return")) and (not word.startswith("//"))  and line!="int main()"):
-                    f.write('printf("line = %d\\n",__LINE__);')
-                    f.write(line)
-                    f.write('\n')
-                    break
 
+            words = line.split()
+                
+            #FUNCTION CHECK#
+            if self.utility.Function_Check(line):
+                f.write(line)
+                f.write('\n')
+                continue
+            #STATEMENT CHECK#
+            # if(word[0]!="#" and word[0]!="{" and word[0]!="}" and word!="using" and (not word.startswith("if")) and (not word.startswith("else")) and (not word.startswith("for")) and (not word.startswith("return")) and (not word.startswith("//"))  and line!="int main()"):
+            
+            if "using" in words and "namespace" in words:
+                f.write(line)
+                f.write('\n')
+                continue
+
+            res = re.findall("[^;]+;", line)
+            if re.search("for[\s]*[(].*[)]", line) == None:
+                if len(res) > 0:
+                    for x in res:
+                        f.write('printf("line = %d\\n",__LINE__);')
+                        f.write(x)
+                        f.write('\n')
                 else:
                     f.write(line)
                     f.write('\n')
-                    break
+            else:
+                f.write(line)
+                f.write('\n')
         f.close()
         return fileName
 
