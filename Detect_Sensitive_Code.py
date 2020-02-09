@@ -166,7 +166,7 @@ class Detect_Sensitive_Code:
         l3 = f3.read().splitlines()
 
         counter = 0
-        stringfff = "<html><body>"
+        stringfff = "<html><body><code>\n"
         for line in l3:
             counter = counter + 1
             if(line == 'freopen("outputC.txt", "w+", stdout);'):
@@ -182,12 +182,12 @@ class Detect_Sensitive_Code:
                     curColor = rank[counter]
                 else:
                     curColor = "black"
-                stringfff += '<p style="color:'+curColor+'">' + line + '   // executed ' + str(cc) + ' times' + '</p>'
+                stringfff += '<p style="color:'+curColor+'">' + line + '   // executed ' + str(cc) + ' times' + '</p>\n'
             else:
-                stringfff += '<p style="color:black">' + line + '</p>'
+                stringfff += '<p style="color:black">' + line + '</p>\n'
             
 
-        stringfff += "</body></html>"
+        stringfff += "</code></body></html>\n"
 
         f2.close()
         f3.close()
