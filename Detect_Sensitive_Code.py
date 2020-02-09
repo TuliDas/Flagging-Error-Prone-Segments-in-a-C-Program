@@ -1,10 +1,14 @@
 import re
 import subprocess
+import Utility
 
 
 
 class Detect_Sensitive_Code:
+    utility = None
+
     def __init__(self, inputFileName):
+        self.utility = Utility.Utility()
         processedFileName = self.removeEmptyLines(inputFileName)
         processedFileName = self.addLineNumberBeforeStatement(processedFileName)
         processedFileName = self.executeProcessedSourceCode(processedFileName)
@@ -51,8 +55,7 @@ class Detect_Sensitive_Code:
             for word in line.split():
                 
                 #FUNCTION CHECK#
-                temp = line.split()
-                if ( ('(' in line) and (')' in line) and (';' not in line ) and ('=' not in line ) and ( temp[0]=="int" or temp[0]=="float" or temp[0]=="double" or temp[0]=="char" or temp[0]=="string" or temp[0]=="void" )    ):
+                if self.utility.Function_Check(line):
                     f.write(line)
                     f.write('\n')
                     break
@@ -125,7 +128,7 @@ class Detect_Sensitive_Code:
 
 def main():
     obj = Detect_Sensitive_Code("inputA.cpp")
-    
+
 if __name__ == '__main__':
     main()
 
