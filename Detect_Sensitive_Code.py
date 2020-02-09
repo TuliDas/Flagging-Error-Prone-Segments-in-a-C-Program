@@ -1,7 +1,8 @@
 import re
 import subprocess
 import Utility
-
+import statistics
+import copy
 
 
 class Detect_Sensitive_Code:
@@ -102,7 +103,20 @@ class Detect_Sensitive_Code:
         return "outputC.txt"
 
 
+    def getColorByRank(self, rank):
+        if rank == 5:
+            return "red"
+        if rank == 4:
+            return "orange"
+        if rank == 3:
+            return "blue"
+        if rank == 2:
+            return "green"
+        return "black"
+        
+
     def highlightStatements(self, inputFileName):
+
         f2 = open('outputC.txt')
         l2 = f2.read().splitlines()
 
@@ -112,6 +126,40 @@ class Detect_Sensitive_Code:
             if word[0]=='line':
                 lineNumbers.append(int(word[2]))
 
+        rank = dict()
+        countTrac = dict()
+        tempList = copy.deepcopy(lineNumbers)
+
+        for x in tempList:
+            if x not in countTrac.keys():
+                countTrac[x] = 1
+            else:
+                countTrac[x] += 1
+        
+        print(countTrac)
+
+        sorted_x = sorted(countTrac.items(), key=lambda kv: kv[1])
+        sorted_x.reverse()
+
+        loopFreq = 100000
+        loopRank = 6
+        for (lineNumber, freq) in sorted_x:
+            if freq < loopFreq:
+                loopFreq = freq
+                loopRank = loopRank - 1
+            
+            if loopRank < 2:
+                loopRank = 2
+            rank[lineNumber] = self.getColorByRank(loopRank)
+                
+            
+
+
+        
+        
+        
+
+        
         #print(lineNumbers)
 
         f3 = open('inputB.cpp')
@@ -130,7 +178,11 @@ class Detect_Sensitive_Code:
                     if x == counter:
                         cc+=1
             
-                stringfff += '<p style="color:blue">' + line + '   // executed ' + str(cc) + ' times' + '</p>'
+                if counter in rank.keys():
+                    curColor = rank[counter]
+                else:
+                    curColor = "black"
+                stringfff += '<p style="color:'+curColor+'">' + line + '   // executed ' + str(cc) + ' times' + '</p>'
             else:
                 stringfff += '<p style="color:black">' + line + '</p>'
             
