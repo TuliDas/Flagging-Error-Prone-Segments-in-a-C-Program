@@ -26,7 +26,7 @@ int main()
 printf("line = %d\n",__LINE__);freopen("outputC.txt", "w+", stdout);
 printf("line = %d\n",__LINE__);    int a = 5 ;
 printf("line = %d\n",__LINE__); int b = 10 ;
-    int ret = checkEvenOrOdd(a);
+printf("line = %d\n",__LINE__);    int ret = checkEvenOrOdd(a);
 printf("line = %d\n",__LINE__);    helloPrint();
 printf("line = %d\n",__LINE__);    int sum=0;
     for(int i=1;i<=a;i++){

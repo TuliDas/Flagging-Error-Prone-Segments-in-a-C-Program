@@ -4,9 +4,6 @@ import Utility
 import statistics
 import copy
 
-
-
-
 class Detect_Sensitive_Code:
     utility = None
 
@@ -23,8 +20,10 @@ class Detect_Sensitive_Code:
         f = open (inputFileName)
         lines = f.read().splitlines()
         f.close()
+
         fileName = "inputB.cpp"
         f = open(fileName, "w")
+
         write_statement = ""
         done = 0 
         for line in lines:
@@ -38,8 +37,8 @@ class Detect_Sensitive_Code:
                 f.write('\n')
                 done = 1
             else:
-                res = re.findall("[^;]+;", line)
-                if re.search("for[\s]*[(].*[)]", line) == None:
+                res = self.utility.Statement_Get(line)
+                if self.utility.Loop_Check(line) == False:
                     if len(res) > 0:
                         for x in res:
                             f.write(x)
@@ -60,8 +59,10 @@ class Detect_Sensitive_Code:
     def addLineNumberBeforeStatement(self, inputFileName):
         f = open (inputFileName)
         lines = f.read().splitlines()
+        f.close()
         fileName = "test.cpp"
         f = open(fileName, "w")
+
         for line in lines:
             if(line==""):
                 continue
@@ -69,20 +70,19 @@ class Detect_Sensitive_Code:
             words = line.split()
                 
             #FUNCTION CHECK#
-            if self.utility.Function_Check(line):
+            if self.utility.Function_Check(line) == True:
                 f.write(line)
                 f.write('\n')
                 continue
+
             #STATEMENT CHECK#
-            # if(word[0]!="#" and word[0]!="{" and word[0]!="}" and word!="using" and (not word.startswith("if")) and (not word.startswith("else")) and (not word.startswith("for")) and (not word.startswith("return")) and (not word.startswith("//"))  and line!="int main()"):
-            
             if "using" in words and "namespace" in words:
                 f.write(line)
                 f.write('\n')
                 continue
 
-            res = re.findall("[^;]+;", line)
-            if re.search("for[\s]*[(].*[)]", line) == None:
+            res = self.utility.Statement_Get(line)
+            if self.utility.Loop_Check(line) == False:
                 if len(res) > 0:
                     for x in res:
                         f.write('printf("line = %d\\n",__LINE__);')
@@ -99,21 +99,21 @@ class Detect_Sensitive_Code:
 
 
     def executeProcessedSourceCode(self, inputFileName):
-        cmd = "test.cpp"
+        cmd = inputFileName
         subprocess.call(["g++","-o", "b", cmd]) 
         subprocess.call("b.exe")
         return "outputC.txt"
 
 
     def getColorByRank(self, rank):
-        if rank == 5:
-            return "red"
         if rank == 4:
-            return "orange"
+            return "red"
         if rank == 3:
-            return "blue"
+            return "orange"
         if rank == 2:
-            return "green"
+            return "purple"
+        if rank == 1:
+            return "blue"
         return "black"
         
 
@@ -138,30 +138,35 @@ class Detect_Sensitive_Code:
             else:
                 countTrac[x] += 1
         
-        print(countTrac)
+        #print(countTrac)
 
         sorted_x = sorted(countTrac.items(), key=lambda kv: kv[1])
         sorted_x.reverse()
+        #print(sorted_x)
+        max_freq = sorted_x[0][1]
+        min_freq = sorted_x[len(sorted_x)-1][1]
 
-        loopFreq = 100000
-        loopRank = 6
+
+
+        #loopFreq = 100000
+        #loopRank = 5
+        resRank = 0
         for (lineNumber, freq) in sorted_x:
-            if freq < loopFreq:
-                loopFreq = freq
-                loopRank = loopRank - 1
-            
-            if loopRank < 2:
-                loopRank = 2
-            rank[lineNumber] = self.getColorByRank(loopRank)
+            if freq >= max_freq:
+                resRank = 4
+            elif freq == min_freq :
+                resRank = 1
+            elif freq == 2:
+                resRank = 2
+            elif freq<max_freq and freq>2:
+                resRank = 3
+            else:
+                resRank = 0
+
+            rank[lineNumber] = self.getColorByRank(resRank)
                 
             
 
-
-        
-        
-        
-
-        
         #print(lineNumbers)
 
         f3 = open('inputB.cpp')
