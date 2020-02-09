@@ -148,8 +148,7 @@ class Detect_Sensitive_Code:
 
 
 
-        #loopFreq = 100000
-        #loopRank = 5
+
         resRank = 0
         for (lineNumber, freq) in sorted_x:
             if freq >= max_freq:
@@ -162,7 +161,6 @@ class Detect_Sensitive_Code:
                 resRank = 3
             else:
                 resRank = 0
-
             rank[lineNumber] = self.getColorByRank(resRank)
                 
             
@@ -189,9 +187,14 @@ class Detect_Sensitive_Code:
                     curColor = rank[counter]
                 else:
                     curColor = "black"
-                stringfff += '<p style="color:'+curColor+'">' + line + '   // executed ' + str(cc) + ' times' + '</p>\n'
+                
+                if curColor =="red":    
+                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //(MOST SENSITIVE portion), executed ' + str(cc) + ' times' + '</p>\n'
+                else:
+                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //executed ' + str(cc) + ' times' + '</p>\n'
+
             else:
-                stringfff += '<p style="color:black">' + line + '</p>\n'
+                stringfff += '<p style="font-family:verdana;font-weight:bold;color:black">' + line + '</p>\n'
             
 
         stringfff += "</code></body></html>\n"

@@ -4,10 +4,9 @@
 https://stackoverflow.com/questions/3409210/regex-to-parse-c-c-functions-declarations
 
 void comparison(int f, string str)
-
 int   main()
-
 Node* hello (void )
+
 
 
 # C++ statement
