@@ -24,13 +24,11 @@ printf("line = %d\n",__LINE__);    printf("Hello World\n");
 int main()
 {
 printf("line = %d\n",__LINE__);freopen("outputC.txt", "w+", stdout);
-printf("line = %d\n",__LINE__);    int a = 5 ;
-printf("line = %d\n",__LINE__);    int b = 10 ;
+printf("line = %d\n",__LINE__);    int a = 5 ; int b = 10 ;
 printf("line = %d\n",__LINE__);    int ret = checkEvenOrOdd(a);
 printf("line = %d\n",__LINE__);    helloPrint();
 printf("line = %d\n",__LINE__);    int sum=0;
-    for(int i=1;i<=a;i++)
-    {
+    for(int i=1;i<=a;i++){
 printf("line = %d\n",__LINE__);        sum+= i ;
         for(int j=1;j<=b;j++)
         {
