@@ -1,0 +1,19 @@
+#include<stdio.h>
+
+       void main()
+       {
+                    printf("\nStatement 1.");
+                    printf("\nStatement 2.");
+
+                    goto las;
+
+                    printf("\nStatement 3.");
+                    printf("\nStatement 4.");
+
+                    las:
+
+                    printf("\nEnd of Program.");
+                    
+            printf("\nFault Tolerance.");
+            printf("\nThesis Topic.");
+       }

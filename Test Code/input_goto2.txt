@@ -1,0 +1,30 @@
+# include <stdio.h>
+
+void fun1()
+{
+
+    ......
+}
+
+double addition(int a,int b)
+{
+
+
+    return 10.0 ;
+}
+
+int main()
+{
+    
+    goto add ;
+
+    bla bla bla ;
+    goto tuli ;
+    goto dibbo ;
+
+    add :
+    goto mail ;
+
+    fun1() ;
+    a = fun2() ;
+}
