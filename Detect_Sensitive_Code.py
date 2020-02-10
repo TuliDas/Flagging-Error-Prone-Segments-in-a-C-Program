@@ -111,9 +111,9 @@ class Detect_Sensitive_Code:
         if rank == 3:
             return "orange"
         if rank == 2:
-            return "purple"
-        if rank == 1:
             return "blue"
+        if rank == 1:
+            return "#00d600"
         return "black"
         
 
@@ -173,6 +173,11 @@ class Detect_Sensitive_Code:
         counter = 0
         stringfff = "<html><body><code>\n"
         for line in l3:
+
+            if(line.startswith("#")):
+                line = self.utility.Handeling_HeaderFile(line)
+                #stringfff += line
+
             counter = counter + 1
             if(line == 'freopen("outputC.txt", "w+", stdout);'):
                 stringfff += ''
@@ -190,8 +195,10 @@ class Detect_Sensitive_Code:
                 
                 if curColor =="red":    
                     stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //(MOST SENSITIVE portion), executed ' + str(cc) + ' times' + '</p>\n'
+                elif cc == 1:
+                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '</p>\n'
                 else:
-                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //executed ' + str(cc) + ' times' + '</p>\n'
+                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //executed ' + str(cc) + ' times' + '</p>\n'    
 
             else:
                 stringfff += '<p style="font-family:verdana;font-weight:bold;color:black">' + line + '</p>\n'

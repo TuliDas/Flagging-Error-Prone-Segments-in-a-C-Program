@@ -21,3 +21,14 @@ class Utility:
 
     def Statement_Get(self, line):
         return re.findall("[^;]+;", line)
+
+    
+    def Handeling_HeaderFile(self,line):
+        strr = ""
+        for i in line:
+            if(i=='<' or i=='>'):
+                strr += i
+                strr += ' '
+            else:
+                strr += i
+        return strr
