@@ -1,14 +1,19 @@
 import re
 import subprocess
 import Utility
+import ParenthesisBalance
 import statistics
 import copy
 
 class Detect_Sensitive_Code:
     utility = None
 
+
     def __init__(self, inputFileName):
+        
         self.utility = Utility.Utility()
+
+
         processedFileName = self.removeEmptyLines(inputFileName)
         processedFileName = self.addLineNumberBeforeStatement(processedFileName)
         processedFileName = self.executeProcessedSourceCode(processedFileName)
@@ -176,7 +181,6 @@ class Detect_Sensitive_Code:
 
             if(line.startswith("#")):
                 line = self.utility.Handeling_HeaderFile(line)
-                #stringfff += line
 
             counter = counter + 1
             if(line == 'freopen("outputC.txt", "w+", stdout);'):
@@ -213,12 +217,8 @@ class Detect_Sensitive_Code:
         f.close()
 
 
-
-
-
 def main():
-    obj = Detect_Sensitive_Code("inputA.cpp")
+    obj = Detect_Sensitive_Code("EDCproneCode.cpp")
 
 if __name__ == '__main__':
     main()
-

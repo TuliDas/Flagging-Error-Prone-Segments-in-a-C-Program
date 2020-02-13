@@ -2,61 +2,67 @@
 <p style="font-family:verdana;font-weight:bold;color:black">#include< stdio.h> </p>
 <p style="font-family:verdana;font-weight:bold;color:black">#include< iostream> </p>
 <p style="font-family:verdana;font-weight:bold;color:black">using namespace std;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">int checkEvenOrOdd(int num)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">//H3//</p>
+<p style="font-family:verdana;font-weight:bold;color:black">void FuctionTerminatingBranch(int s,int e)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">{</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    if(s<0 || e>=100)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    return;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    int sum = 0 ;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    int ara[100];</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=s;i<=e;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        ara[i] = s ;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=s;i<=e;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        printf("%d\n",ara[i]);</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
+<p style="font-family:verdana;font-weight:bold;color:black">}</p>
+<p style="font-family:verdana;font-weight:bold;color:black">bool checkOddEven(int num)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">{</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    if(num%2==0)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        goto EVEN;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    else</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">        goto ODD;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    ODD:</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">        printf("%d is an odd number\n",num);</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">        return 1;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    EVEN:</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        printf("%d is an even number\n",num);</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        return 1;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">}</p>
-<p style="font-family:verdana;font-weight:bold;color:black">void helloPrint()</p>
-<p style="font-family:verdana;font-weight:bold;color:black">{</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    printf("Hello World\n");</p>
-<p style="font-family:verdana;font-weight:bold;color:black">}</p>
-<p style="font-family:verdana;font-weight:bold;color:black">int addition(int x,int y)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">{</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    int res ;</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    res = x + y ;</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    return res;</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">        return 0;   //executed 30 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    return 1;</p>
 <p style="font-family:verdana;font-weight:bold;color:black">}</p>
 <p style="font-family:verdana;font-weight:bold;color:black">int main()</p>
 <p style="font-family:verdana;font-weight:bold;color:black">{</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    int a = 5 ;</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600"> int b = 10 ;</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600"> int ret = checkEvenOrOdd(a);</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">  goto exit_helloPrint;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    helloPrint();</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    printf("I will not be executed");</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    exit_helloPrint:</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    int sum=0;</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    sum = addition(a,b);</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=1;i<=a;i++){</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">        sum+= i ;   //executed 5 times</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=1;j<=b;j++)</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    int a = 10;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    //H1//</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    int testAra[100];</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    int temp = 0 ;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=0;i<10;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=0;j<5;j++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        {</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">            sum+=j;   //executed 50 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">            temp += checkOddEven(j);   //(MOST SENSITIVE portion), executed 50 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">            testAra[i] = temp ;   //(MOST SENSITIVE portion), executed 50 times</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    </p>
-<p style="font-family:verdana;font-weight:bold;color:black">        for(int i=1;i<=100;i++){</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">        sum+= i ;   //executed 100 times</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=1;j<=20;j++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    //H2//</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=0;i<3;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=0;j<3;j++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        {</p>
-<p style="font-family:verdana;font-weight:bold;color:red">            sum+=j;   //(MOST SENSITIVE portion), executed 2000 times</p>
-<p style="font-family:verdana;font-weight:bold;color:red">            printf("This is larger loop\n");   //(MOST SENSITIVE portion), executed 2000 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">            for(int k=0;k<3;k++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">            {</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">                printf("%d %d %d\n",i,j,k);   //executed 27 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">            }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:#00d600">    printf("Sum = %d\n",sum);</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    //H4//</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    if(a == 10)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">        int b = 10;</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">        int c = b + 1;</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">        int s = b + c;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    else</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        int b = 15;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        int c = b++;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        int s = c++;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        int t = 100;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
 <p style="font-family:verdana;font-weight:bold;color:#00d600">    return 0;</p>
 <p style="font-family:verdana;font-weight:bold;color:black">}</p>
 </code></body></html>

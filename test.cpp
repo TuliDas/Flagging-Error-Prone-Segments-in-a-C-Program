@@ -1,61 +1,67 @@
 #include<stdio.h>
 #include<iostream>
 using namespace std;
-int checkEvenOrOdd(int num)
+//H3//
+void FuctionTerminatingBranch(int s,int e)
+{
+    if(s<0 || e>=100)
+printf("line = %d\n",__LINE__);    return;
+printf("line = %d\n",__LINE__);    int sum = 0 ;
+printf("line = %d\n",__LINE__);    int ara[100];
+    for(int i=s;i<=e;i++)
+    {
+printf("line = %d\n",__LINE__);        ara[i] = s ;
+    }
+    for(int i=s;i<=e;i++)
+    {
+printf("line = %d\n",__LINE__);        printf("%d\n",ara[i]);
+    }
+}
+bool checkOddEven(int num)
 {
     if(num%2==0)
-    {
-printf("line = %d\n",__LINE__);        goto EVEN;
-    }
-    else
-    {
-printf("line = %d\n",__LINE__);        goto ODD;
-    }
-    ODD:
-printf("line = %d\n",__LINE__);        printf("%d is an odd number\n",num);
-printf("line = %d\n",__LINE__);        return 1;
-    EVEN:
-printf("line = %d\n",__LINE__);        printf("%d is an even number\n",num);
-printf("line = %d\n",__LINE__);        return 1;
-}
-void helloPrint()
-{
-printf("line = %d\n",__LINE__);    printf("Hello World\n");
-}
-int addition(int x,int y)
-{
-printf("line = %d\n",__LINE__);    int res ;
-printf("line = %d\n",__LINE__);    res = x + y ;
-printf("line = %d\n",__LINE__);    return res;
+printf("line = %d\n",__LINE__);        return 0;
+printf("line = %d\n",__LINE__);    return 1;
 }
 int main()
 {
 printf("line = %d\n",__LINE__);freopen("outputC.txt", "w+", stdout);
-printf("line = %d\n",__LINE__);    int a = 5 ;
-printf("line = %d\n",__LINE__); int b = 10 ;
-printf("line = %d\n",__LINE__); int ret = checkEvenOrOdd(a);
-printf("line = %d\n",__LINE__);  goto exit_helloPrint;
-printf("line = %d\n",__LINE__);    helloPrint();
-printf("line = %d\n",__LINE__);    printf("I will not be executed");
-    exit_helloPrint:
-printf("line = %d\n",__LINE__);    int sum=0;
-printf("line = %d\n",__LINE__);    sum = addition(a,b);
-    for(int i=1;i<=a;i++){
-printf("line = %d\n",__LINE__);        sum+= i ;
-        for(int j=1;j<=b;j++)
+printf("line = %d\n",__LINE__);    int a = 10;
+    //H1//
+printf("line = %d\n",__LINE__);    int testAra[100];
+printf("line = %d\n",__LINE__);    int temp = 0 ;
+    for(int i=0;i<10;i++)
+    {
+        for(int j=0;j<5;j++)
         {
-printf("line = %d\n",__LINE__);            sum+=j;
+printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
+printf("line = %d\n",__LINE__);            testAra[i] = temp ;
         }
     }
-    
-        for(int i=1;i<=100;i++){
-printf("line = %d\n",__LINE__);        sum+= i ;
-        for(int j=1;j<=20;j++)
+    //H2//
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
         {
-printf("line = %d\n",__LINE__);            sum+=j;
-printf("line = %d\n",__LINE__);            printf("This is larger loop\n");
+            for(int k=0;k<3;k++)
+            {
+printf("line = %d\n",__LINE__);                printf("%d %d %d\n",i,j,k);
+            }
         }
     }
-printf("line = %d\n",__LINE__);    printf("Sum = %d\n",sum);
+    //H4//
+    if(a == 10)
+    {
+printf("line = %d\n",__LINE__);        int b = 10;
+printf("line = %d\n",__LINE__);        int c = b + 1;
+printf("line = %d\n",__LINE__);        int s = b + c;
+    }
+    else
+    {
+printf("line = %d\n",__LINE__);        int b = 15;
+printf("line = %d\n",__LINE__);        int c = b++;
+printf("line = %d\n",__LINE__);        int s = c++;
+printf("line = %d\n",__LINE__);        int t = 100;
+    }
 printf("line = %d\n",__LINE__);    return 0;
 }

@@ -1,61 +1,67 @@
 #include<stdio.h>
 #include<iostream>
 using namespace std;
-int checkEvenOrOdd(int num)
+//H3//
+void FuctionTerminatingBranch(int s,int e)
+{
+    if(s<0 || e>=100)
+    return;
+    int sum = 0 ;
+    int ara[100];
+    for(int i=s;i<=e;i++)
+    {
+        ara[i] = s ;
+    }
+    for(int i=s;i<=e;i++)
+    {
+        printf("%d\n",ara[i]);
+    }
+}
+bool checkOddEven(int num)
 {
     if(num%2==0)
-    {
-        goto EVEN;
-    }
-    else
-    {
-        goto ODD;
-    }
-    ODD:
-        printf("%d is an odd number\n",num);
-        return 1;
-    EVEN:
-        printf("%d is an even number\n",num);
-        return 1;
-}
-void helloPrint()
-{
-    printf("Hello World\n");
-}
-int addition(int x,int y)
-{
-    int res ;
-    res = x + y ;
-    return res;
+        return 0;
+    return 1;
 }
 int main()
 {
 freopen("outputC.txt", "w+", stdout);
-    int a = 5 ;
- int b = 10 ;
- int ret = checkEvenOrOdd(a);
-  goto exit_helloPrint;
-    helloPrint();
-    printf("I will not be executed");
-    exit_helloPrint:
-    int sum=0;
-    sum = addition(a,b);
-    for(int i=1;i<=a;i++){
-        sum+= i ;
-        for(int j=1;j<=b;j++)
+    int a = 10;
+    //H1//
+    int testAra[100];
+    int temp = 0 ;
+    for(int i=0;i<10;i++)
+    {
+        for(int j=0;j<5;j++)
         {
-            sum+=j;
+            temp += checkOddEven(j);
+            testAra[i] = temp ;
         }
     }
-    
-        for(int i=1;i<=100;i++){
-        sum+= i ;
-        for(int j=1;j<=20;j++)
+    //H2//
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
         {
-            sum+=j;
-            printf("This is larger loop\n");
+            for(int k=0;k<3;k++)
+            {
+                printf("%d %d %d\n",i,j,k);
+            }
         }
     }
-    printf("Sum = %d\n",sum);
+    //H4//
+    if(a == 10)
+    {
+        int b = 10;
+        int c = b + 1;
+        int s = b + c;
+    }
+    else
+    {
+        int b = 15;
+        int c = b++;
+        int s = c++;
+        int t = 100;
+    }
     return 0;
 }
