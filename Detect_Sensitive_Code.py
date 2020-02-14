@@ -7,17 +7,21 @@ import copy
 
 class Detect_Sensitive_Code:
     utility = None
+    parenthesisBalance = None
 
 
     def __init__(self, inputFileName):
         
         self.utility = Utility.Utility()
+        self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
 
 
         processedFileName = self.removeEmptyLines(inputFileName)
+        getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName)
         processedFileName = self.addLineNumberBeforeStatement(processedFileName)
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         self.highlightStatements(processedFileName)
+        self.highlightHeuristics(processedFileName , getTrackOfBlock)
         print("Operation Completed")
 
 
@@ -215,6 +219,25 @@ class Detect_Sensitive_Code:
         f = open("report.html", "w")
         f.write(stringfff)
         f.close()
+
+
+
+    def highlightHeuristics(self, inputFileName , trackOfBlock):
+        f2 = open('outputC.txt')
+        l2 = f2.read().splitlines()
+        f2.close()
+
+        lineNumbers = []
+        for line in l2:
+            word = line.split()
+            if word[0]=='line':
+                lineNumbers.append(int(word[2]))
+        
+
+        print("-- ---- ")
+        for i in trackOfBlock.keys():
+            print(str(i) + ' ' + str(trackOfBlock[i]))
+
 
 
 def main():
