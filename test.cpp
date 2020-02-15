@@ -31,7 +31,7 @@ printf("line = %d\n",__LINE__);    int a = 10;
     //H1//
 printf("line = %d\n",__LINE__);    int testAra[100];
 printf("line = %d\n",__LINE__);    int temp = 0 ;
-    for(int i=0;i<10;i++)
+    for(int i=0;i<5;i++)
     {
         for(int j=0;j<5;j++)
         {

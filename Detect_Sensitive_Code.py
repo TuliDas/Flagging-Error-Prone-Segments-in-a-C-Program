@@ -220,6 +220,12 @@ class Detect_Sensitive_Code:
         f.close()
 
 
+    def calculateOccurrences(self, linenumbers, st, ed):
+        cnt = 0
+        for i in range(0, len(linenumbers)):
+            if st>=linenumbers[i] and linenumbers[i]<=ed:
+                cnt+=1
+        return cnt
 
     def highlightHeuristics(self, inputFileName , trackOfBlock):
         f2 = open(inputFileName)
@@ -246,10 +252,14 @@ class Detect_Sensitive_Code:
         loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
         loop_level = self.parenthesisBalance.LoopLeveling(loop_dict)
         
-        '''
-        for i in sorted(function_dict):
-            print(str(i) + '-> ' + str(function_dict[i]))
-        '''
+        
+        for i in sorted(loop_level):
+            print(str(i) + '-> ' + str(loop_level[i]))
+
+        for i in sorted(loop_level):
+            (ed,level) = loop_level[i]
+            print(str(i)+ '-> ' + str(ed) + ': ' + str(self.calculateOccurrences(lineNumbers, i, ed)))
+        
         
 
 def main():
