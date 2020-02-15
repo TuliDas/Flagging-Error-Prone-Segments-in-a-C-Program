@@ -26,6 +26,7 @@ printf("line = %d\n",__LINE__);    return 1;
 int main()
 {
 printf("line = %d\n",__LINE__);freopen("outputC.txt", "w+", stdout);
+printf("line = %d\n",__LINE__);//freopen("outputC.txt", "w+", stdout);
 printf("line = %d\n",__LINE__);    int a = 10;
     //H1//
 printf("line = %d\n",__LINE__);    int testAra[100];

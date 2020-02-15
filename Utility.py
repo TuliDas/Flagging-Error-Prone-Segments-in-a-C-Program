@@ -39,9 +39,6 @@ class Utility:
 
     def NonStatement_Declaration(self, line):
         
-        if(self.Statement_Check(line)):
-            return "null"
-
         if(self.Function_Check(line)):
             s = "Function"
             return s

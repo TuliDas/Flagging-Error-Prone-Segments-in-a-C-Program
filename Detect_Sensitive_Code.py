@@ -15,7 +15,6 @@ class Detect_Sensitive_Code:
         self.utility = Utility.Utility()
         self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
 
-
         processedFileName = self.removeEmptyLines(inputFileName)
         getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName)
         processedFileName = self.addLineNumberBeforeStatement(processedFileName)
@@ -223,22 +222,35 @@ class Detect_Sensitive_Code:
 
 
     def highlightHeuristics(self, inputFileName , trackOfBlock):
-        f2 = open('outputC.txt')
+        f2 = open(inputFileName)
         l2 = f2.read().splitlines()
         f2.close()
-
         lineNumbers = []
         for line in l2:
             word = line.split()
             if word[0]=='line':
                 lineNumbers.append(int(word[2]))
         
-
+        print(lineNumbers)
+        
+        '''
         print("-- ---- ")
         for i in trackOfBlock.keys():
             print(str(i) + ' ' + str(trackOfBlock[i]))
+        '''
 
-
+        if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
+        else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
+        elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
+        function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
+        loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
+        loop_level = self.parenthesisBalance.LoopLeveling(loop_dict)
+        
+        '''
+        for i in sorted(function_dict):
+            print(str(i) + '-> ' + str(function_dict[i]))
+        '''
+        
 
 def main():
     obj = Detect_Sensitive_Code("EDCproneCode.cpp")

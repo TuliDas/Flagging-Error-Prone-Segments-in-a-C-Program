@@ -26,6 +26,7 @@ bool checkOddEven(int num)
 int main()
 {
 freopen("outputC.txt", "w+", stdout);
+//freopen("outputC.txt", "w+", stdout);
     int a = 10;
     //H1//
     int testAra[100];
