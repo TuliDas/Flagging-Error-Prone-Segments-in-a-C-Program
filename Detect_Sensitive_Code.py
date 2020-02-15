@@ -14,14 +14,89 @@ class Detect_Sensitive_Code:
         
         self.utility = Utility.Utility()
         self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
-
-        processedFileName = self.removeEmptyLines(inputFileName)
-        getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName)
-        processedFileName = self.addLineNumberBeforeStatement(processedFileName)
+        processedFileName = self.removeEmptyLines(inputFileName) #InputB.cpp
+        getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
+        processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock) #InputC.cpp
+        processedFileName = self.addLineNumberBeforeStatement(processedFileName) #test.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         self.highlightStatements(processedFileName)
         self.highlightHeuristics(processedFileName , getTrackOfBlock)
         print("Operation Completed")
+
+
+    def checkIfExists(self, dictData, val):
+        for key in dictData.keys():    
+            if dictData[key] == val:
+                return True
+        return False
+
+    def ifInsideBlock(self, dictData, lineNum):
+        for st in dictData.keys():    
+            ed = dictData[st]
+            if st <= lineNum and lineNum <= ed:
+                return True
+        return False
+        
+    def addBlockwiseLineNumber(self, inputFileName, trackOfBlock):
+        reader = open(inputFileName)
+        writer = open("inputC.cpp", "w")
+        lines = reader.read().splitlines()
+        cnt = 0
+        
+        if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
+        else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
+        elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
+
+        mergedIfElse = dict()
+        mergedIfElse.update(if_dict)
+        mergedIfElse.update(else_dict)
+        mergedIfElse.update(elseIf_dict)
+
+
+        function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
+        loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
+        loop_level = self.parenthesisBalance.LoopLeveling(loop_dict)
+
+        print("TheKing--> function_dict: ", function_dict)
+        print("TheKing--> mergedIfElse_dict: ", mergedIfElse)
+        for line in lines:
+            cnt = cnt + 1
+
+            strToWrite = ''
+            if 'return' in line:
+                if self.ifInsideBlock(mergedIfElse, cnt):
+                    strToWrite = strToWrite + 'printf("ifelse_end_id %d\\n", global_ifelse_id--);'
+                if self.ifInsideBlock(loop_dict, cnt):
+                    strToWrite = strToWrite + 'printf("loop_end_id %d\\n", global_loop_id--);'
+                if self.ifInsideBlock(function_dict, cnt):
+                    strToWrite = strToWrite + 'printf("function_end_id %d\\n", global_function_id--);'
+                strToWrite = strToWrite + line 
+                
+                writer.write(strToWrite)
+                writer.write('\n')
+                continue
+            
+            if (cnt - 1) in function_dict:
+                line += 'printf("function_start_id %d\\n", ++global_function_id);'
+            if self.checkIfExists(function_dict, cnt):
+                line = 'printf("function_end_id %d\\n", global_function_id--);' + line
+            if (cnt - 1) in mergedIfElse:
+                line += 'printf("ifelse_start_id %d\\n", ++global_ifelse_id);'
+            if self.checkIfExists(mergedIfElse, cnt):
+                line = 'printf("ifelse_end_id %d\\n", global_ifelse_id--);' + line
+            if (cnt) in loop_dict:
+                line = 'printf("loop_start_id %d\\n", ++global_loop_id);' + line
+            if self.checkIfExists(loop_dict, cnt):
+                line += 'printf("loop_end_id %d\\n", global_loop_id--);'          
+
+            writer.write(line)
+            writer.write('\n')
+        
+        writer.close()
+        reader.close()
+
+        return "inputC.cpp"
+
 
 
     def removeEmptyLines(self, inputFileName):
@@ -31,6 +106,11 @@ class Detect_Sensitive_Code:
 
         fileName = "inputB.cpp"
         f = open(fileName, "w")
+        line = "static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;"
+        f.write(line)
+        f.write("\n")
+        
+
 
         write_statement = ""
         done = 0 
@@ -65,13 +145,23 @@ class Detect_Sensitive_Code:
 
 
     def addLineNumberBeforeStatement(self, inputFileName):
+        print("TheKing--> ", inputFileName)
+
         f = open (inputFileName)
         lines = f.read().splitlines()
         f.close()
         fileName = "test.cpp"
         f = open(fileName, "w")
-
+        cnt = 0
         for line in lines:
+            if "global_loop_id" in line or "global_ifelse_id" in line or "global_function_id" in line:
+                f.write(line)
+                f.write('\n')
+                continue
+            cnt+=1
+            if cnt == 1:
+                continue
+
             if(line==""):
                 continue
 
@@ -223,7 +313,7 @@ class Detect_Sensitive_Code:
     def calculateOccurrences(self, linenumbers, st, ed):
         cnt = 0
         for i in range(0, len(linenumbers)):
-            if st>=linenumbers[i] and linenumbers[i]<=ed:
+            if st <= linenumbers[i] and linenumbers[i] <= ed:
                 cnt+=1
         return cnt
 
@@ -237,7 +327,8 @@ class Detect_Sensitive_Code:
             if word[0]=='line':
                 lineNumbers.append(int(word[2]))
         
-        print(lineNumbers)
+        for x in sorted(lineNumbers):
+            print(x)
         
         '''
         print("-- ---- ")

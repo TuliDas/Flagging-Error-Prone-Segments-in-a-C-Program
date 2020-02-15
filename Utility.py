@@ -5,6 +5,9 @@ class Utility:
         print("Inside Utility Constructor")
 
     def Function_Check(self, line):
+        if line.startswith("else if"):
+            return False
+
         if re.search("[\w*]+[\s]+[\w]+[\s]*[(][^)]*[)]", line) == None:
             return False
         return True

@@ -1,3 +1,4 @@
+static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
 #include<stdio.h>
 #include<iostream>
 using namespace std;
@@ -5,7 +6,9 @@ using namespace std;
 void FuctionTerminatingBranch(int s,int e)
 {
     if(s<0 || e>=100)
-    return;
+    {
+        return;
+    }
     int sum = 0 ;
     int ara[100];
     for(int i=s;i<=e;i++)
@@ -64,5 +67,27 @@ freopen("outputC.txt", "w+", stdout);
         int s = c++;
         int t = 100;
     }
+    //H4//
+    if(a == 10)
+    {
+        int b = 10;
+        int c = b + 1;
+        int s = b + c;
+    }
+    else if (a == 20)
+    {
+        int b = 15;
+        int c = b++;
+        int s = c++;
+        int t = 100;
+    }
+    else
+    {
+        int b = 15;
+        int c = b+10;
+        int s = c+15;
+        int t = 100;
+    }
+    
     return 0;
 }
