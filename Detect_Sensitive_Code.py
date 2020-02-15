@@ -85,9 +85,9 @@ class Detect_Sensitive_Code:
             if self.checkIfExists(mergedIfElse, cnt):
                 line = 'printf("ifelse_end_id %d\\n", global_ifelse_id--);' + line
             if (cnt) in loop_dict:
-                line = 'printf("loop_start_id %d\\n", ++global_loop_id);' + line
+                line = 'printf("loop_start_id %d line = %d\\n", ++global_loop_id, __LINE__);' + line
             if self.checkIfExists(loop_dict, cnt):
-                line += 'printf("loop_end_id %d\\n", global_loop_id--);'          
+                line += 'printf("loop_end_id %d line = %d\\n", global_loop_id--, __LINE__);'          
 
             writer.write(line)
             writer.write('\n')
