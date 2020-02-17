@@ -18,6 +18,8 @@ class Utility:
         return True
         
     def Statement_Check(self, line):
+        if (  ("{" in line) or ("}" in line) ):
+            return False
         if re.search("[^;]+;", line) == None:
             return False
         return True
@@ -41,7 +43,7 @@ class Utility:
         return False
 
     def NonStatement_Declaration(self, line):
-        
+
         if(self.Function_Check(line)):
             s = "Function"
             return s
