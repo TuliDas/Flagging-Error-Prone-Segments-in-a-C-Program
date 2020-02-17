@@ -20,8 +20,8 @@ class Detect_Sensitive_Code:
         getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
-        self.highlightStatements(processedFileName)
-        #self.highlightHeuristics(processedFileName , getTrackOfBlock)
+        #self.highlightStatements(processedFileName)
+        self.highlightHeuristics(processedFileName , getTrackOfBlock)
         print("Operation Successful")
 
 
@@ -177,13 +177,14 @@ class Detect_Sensitive_Code:
 
             strToWrite = ''
             if 'return' in line:
+                ss = self.utility.Statement_Get(line)
                 if self.ifInsideBlock(mergedIfElse, cnt):
                     strToWrite = strToWrite + 'printf("ifelse_end_id %d line = %d\\n", global_ifelse_id--, __LINE__);'
                 if self.ifInsideBlock(loop_dict, cnt):
                     strToWrite = strToWrite + 'printf("loop_end_id %d line = %d\\n", global_loop_id--, __LINE__);'
                 if self.ifInsideBlock(function_dict, cnt):
                     strToWrite = strToWrite + 'printf("function_end_id %d line = %d\\n", global_function_id--, __LINE__);'
-                strToWrite = strToWrite + line 
+                strToWrite = ss[0] + strToWrite + ss[1] 
                 
                 writer.write(strToWrite)
                 writer.write('\n')
@@ -208,9 +209,6 @@ class Detect_Sensitive_Code:
         writer.close()
         reader.close()
         return fileName
-
-
-
 
     def executeProcessedSourceCode(self, inputFileName):
         cmd = inputFileName
@@ -337,42 +335,124 @@ class Detect_Sensitive_Code:
                 cnt+=1
         return cnt
 
+    def calculateStatementsForLoopHeuristics(self, instruction_set):
+        instruction_set.append([-1, -1])
+        ret = {}
+        st = []
+        st.append([-1,-1])
+        for ls in instruction_set:
+            sz = len(st)
+            if ls[0] == 0:
+                for ss in st:
+                    tup = (ss[0], ss[1])
+                    if tup in ret:
+                        ret[tup] += 1
+                    else:
+                        ret[tup] = 1
+            elif ls[0] == st[sz - 1][0]:
+                st.pop()
+            else:
+                st.append(ls)
+        
+        return ret
+    
+    def calculateStatementsForIfElseHeuristics(self, instruction_set):
+        instruction_set.append([-1, -1])
+        ret = {}
+        st = []
+        st.append([-1,-1])
+        for ls in instruction_set:
+            sz = len(st)
+            if ls[0] == 0:
+                for ss in st:
+                    tup = (ss[0], ss[1])
+                    if tup in ret:
+                        ret[tup] += 1
+                    else:
+                        ret[tup] = 1
+            elif ls[0] == st[sz - 1][0]:
+                st.pop()
+            else:
+                st.append(ls)
+        #print(ret)
+        return ret
+
+
     def highlightHeuristics(self, inputFileName , trackOfBlock):
         f2 = open(inputFileName)
         l2 = f2.read().splitlines()
         f2.close()
-        lineNumbers = []
+        loop_temp = []
+        ifelse_temp = []
+        function_temp = []
+
         for line in l2:
             word = line.split()
             if word[0]=='line':
-                lineNumbers.append(int(word[2]))
-        
-        for x in sorted(lineNumbers):
-            print(x)
-        
-        '''
-        print("-- ---- ")
-        for i in trackOfBlock.keys():
-            print(str(i) + ' ' + str(trackOfBlock[i]))
-        '''
+                temp = [0,int(word[2])]
+                loop_temp.append(temp)
+                ifelse_temp.append(temp)
+                function_temp.append(temp)
+                continue
+            
+            else:
+                if (word[0] == 'loop_start_id'):
+                    temp = [int(word[1]) , int(word[4])]
+                    loop_temp.append(temp)
+                    continue
 
+                if (word[0] == 'loop_end_id'):
+                    temp = [int(word[1]) , int(word[4])]
+                    loop_temp.append(temp)
+                    continue
+
+                if (word[0] == 'ifelse_start_id'):
+                    temp = [int(word[1]) , int(word[4])]
+                    ifelse_temp.append(temp)
+                    continue
+                    
+                if (word[0] == 'ifelse_end_id'):
+                    temp = [int(word[1]) , int(word[4])]
+                    ifelse_temp.append(temp)
+                    continue
+
+                if (word[0] == 'function_start_id'):
+                    temp = [int(word[1]) , int(word[4])]
+                    function_temp.append(temp)
+                    continue
+                    
+                if (word[0] == 'function_end_id'):
+                    temp = [int(word[1]) , int(word[4])]
+                    function_temp.append(temp)
+                    continue
+        
         if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
         else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
         elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
         function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
         loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
         loop_level = self.parenthesisBalance.LoopLeveling(loop_dict)
+        mergedIfElse = dict()
+        mergedIfElse.update(if_dict)
+        mergedIfElse.update(else_dict)
+        mergedIfElse.update(elseIf_dict)
         
-        
-        for i in sorted(loop_level):
-            print(str(i) + '-> ' + str(loop_level[i]))
-
-        for i in sorted(loop_level):
-            (ed,level) = loop_level[i]
-            print(str(i)+ '-> ' + str(ed) + ': ' + str(self.calculateOccurrences(lineNumbers, i, ed)))
-        
+        #print(loop_temp)
         
 
+        #loop_final = self.calculateStatementsForLoopHeuristics(loop_temp)
+        ifelse_final = self.calculateStatementsForIfElseHeuristics(ifelse_temp)
+        #function_final = self.calculateStatementsForHeuristics(function_temp)
+
+        #print(ifelse_temp)
+        print(ifelse_final)
+        #print(loop_final)
+
+
+        
+
+        
+        
 def main():
     obj = Detect_Sensitive_Code("EDCproneCode.cpp")
 

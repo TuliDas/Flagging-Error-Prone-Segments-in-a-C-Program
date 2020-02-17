@@ -6,7 +6,7 @@ void FuctionTerminatingBranch(int s,int e)
 {printf("function_start_id %d line = %d\n", ++global_function_id, __LINE__);
     if(s<0 || e>=100)
     {printf("ifelse_start_id %d line = %d\n", ++global_ifelse_id, __LINE__);
-printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);printf("line = %d\n",__LINE__);        return;
+printf("line = %d\n",__LINE__);printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);        return;
 printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);    }
 printf("line = %d\n",__LINE__);    int sum = 0 ;
 printf("line = %d\n",__LINE__);    int ara[100];
@@ -23,9 +23,9 @@ bool checkOddEven(int num)
 {printf("function_start_id %d line = %d\n", ++global_function_id, __LINE__);
     if(num%2==0)
     {printf("ifelse_start_id %d line = %d\n", ++global_ifelse_id, __LINE__);
-printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);printf("line = %d\n",__LINE__);        return 0;
+printf("line = %d\n",__LINE__);printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);        return 0;
 printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);    }
-printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);printf("line = %d\n",__LINE__);    return 1;
+printf("line = %d\n",__LINE__);printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);    return 1;
 printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);}
 int main()
 { freopen("Output.txt", "w+", stdout);
