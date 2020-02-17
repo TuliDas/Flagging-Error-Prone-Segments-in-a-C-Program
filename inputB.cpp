@@ -32,9 +32,9 @@ int main()
 printf("line = %d\n",__LINE__);    int a = 10;
 printf("line = %d\n",__LINE__);    int testAra[100];
 printf("line = %d\n",__LINE__);    int temp = 0 ;
-    for(int i=0;i<3;i++)
+    for(int i=0;i<5;i++)
     {
-        for(int j=0;j<3;j++)
+        for(int j=0;j<5;j++)
         {
 printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
 printf("line = %d\n",__LINE__);            testAra[i] = temp ;
@@ -47,6 +47,7 @@ printf("line = %d\n",__LINE__);            testAra[i] = temp ;
         {
             for(int k=0;k<3;k++)
             {
+printf("line = %d\n",__LINE__);                 int a = checkOddEven(k);
 printf("line = %d\n",__LINE__);                printf("%d %d %d\n",i,j,k);
             }
         }

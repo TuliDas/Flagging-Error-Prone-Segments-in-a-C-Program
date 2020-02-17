@@ -24,20 +24,20 @@
 <p style="font-family:verdana;font-weight:bold;color:black">{</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    if(num%2==0)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">        return 0;   //executed 6 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">        return 0;   //(MOST SENSITIVE portion), executed 33 times</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">    return 1;   //executed 3 times</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">    return 1;   //executed 19 times</p>
 <p style="font-family:verdana;font-weight:bold;color:black">}</p>
 <p style="font-family:verdana;font-weight:bold;color:black">int main()</p>
 <p style="font-family:verdana;font-weight:bold;color:#00d600">    int a = 10;</p>
 <p style="font-family:verdana;font-weight:bold;color:#00d600">    int testAra[100];</p>
 <p style="font-family:verdana;font-weight:bold;color:#00d600">    int temp = 0 ;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=0;i<3;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=0;i<5;i++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=0;j<3;j++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=0;j<5;j++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        {</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">            temp += checkOddEven(j);   //executed 9 times</p>
-<p style="font-family:verdana;font-weight:bold;color:orange">            testAra[i] = temp ;   //executed 9 times</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">            temp += checkOddEven(j);   //executed 25 times</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">            testAra[i] = temp ;   //executed 25 times</p>
 <p style="font-family:verdana;font-weight:bold;color:black">            </p>
 <p style="font-family:verdana;font-weight:bold;color:black">        }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>
@@ -47,7 +47,8 @@
 <p style="font-family:verdana;font-weight:bold;color:black">        {</p>
 <p style="font-family:verdana;font-weight:bold;color:black">            for(int k=0;k<3;k++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">            {</p>
-<p style="font-family:verdana;font-weight:bold;color:red">                printf("%d %d %d\n",i,j,k);   //(MOST SENSITIVE portion), executed 27 times</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">                 int a = checkOddEven(k);   //executed 27 times</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">                printf("%d %d %d\n",i,j,k);   //executed 27 times</p>
 <p style="font-family:verdana;font-weight:bold;color:black">            }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>

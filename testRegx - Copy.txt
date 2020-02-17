@@ -8,6 +8,13 @@ int   main()
 Node* hello (void )
 
 
+#function call
+[\w]+[\s]*[(][^)]*[)];
+
+function(a,b);
+a = fun(a,b);
+Int ret = checkOddEven(a);
+
 
 # C++ statement
 [^;]+;
@@ -18,7 +25,7 @@ int a = 5 ; int b = 10 ; int a = 5 ; p+=5;
 // for[\s]*[(].*[)]
 for(int i=1;i<=a;i++)
 while(i<0)
-Int ret = checkOddEven(a);
+
 
 
 

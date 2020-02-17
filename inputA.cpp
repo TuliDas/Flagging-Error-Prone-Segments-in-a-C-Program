@@ -32,9 +32,9 @@ int main()
     int a = 10;
     int testAra[100];
     int temp = 0 ;
-    for(int i=0;i<3;i++)
+    for(int i=0;i<5;i++)
     {
-        for(int j=0;j<3;j++)
+        for(int j=0;j<5;j++)
         {
             temp += checkOddEven(j);
             testAra[i] = temp ;
@@ -47,6 +47,7 @@ int main()
         {
             for(int k=0;k<3;k++)
             {
+                 int a = checkOddEven(k);
                 printf("%d %d %d\n",i,j,k);
             }
         }

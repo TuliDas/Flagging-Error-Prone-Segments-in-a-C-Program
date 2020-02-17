@@ -12,6 +12,20 @@ class Utility:
             return False
         return True
 
+    def Function_CallName(self,line):
+        if re.search("[\w]+[\s]*[(][^)]*[)];", line) == None:
+            return 'null'
+
+        res = re.findall("[\w]+[\s]*[(][^)]*[)];", line)
+        ret = ""
+        for c in res[0]:
+            if c == '(':
+                break
+            else:
+                ret = ret + c
+        return ret
+
+
     def Loop_Check(self,line):
         if re.search("for[\s]*[(].*[)]", line) == None:
             return False

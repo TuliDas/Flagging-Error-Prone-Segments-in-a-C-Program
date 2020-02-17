@@ -9,21 +9,20 @@ class Detect_Sensitive_Code:
     utility = None
     parenthesisBalance = None
 
-
     def __init__(self, inputFileName):
         
         self.utility = Utility.Utility()
         self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
-
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
+        allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunction
         processedFileName = self.addLineNumberBeforeStatement(processedFileName) # -> InputB.cpp
         getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
-        #self.highlightStatements(processedFileName)
-        self.highlightHeuristics(processedFileName , getTrackOfBlock)
+        self.highlightStatements(processedFileName)
+        self.highlightHeuristics(processedFileName , getTrackOfBlock, allFunctionName)
         print("Operation Successful")
-
+        
 
     def removeEmptyLines(self, inputFileName):
         f = open (inputFileName)
@@ -73,6 +72,57 @@ class Detect_Sensitive_Code:
         f.close()
         return fileName
 
+    def functioncall_Check(self, fn_list, loop_list):
+        ret = {}
+        st = []
+        st.append([-1,-1])
+        for ls in loop_list:
+            sz = len(st)
+            if ls[0] == 0:
+                for ln in fn_list:
+                    if ln[0] == ls[1]:
+                        ret[ln] = sz
+                        break
+            elif ls[0] == st[sz - 1][0]:
+                st.pop()
+            else:
+                st.append(ls)
+        ret_dic = {}
+        for rr in ret.keys():
+            ret_dic[rr[1]] = []
+        for rr in ret.keys():
+            lineno = rr[0]
+            fn_name = rr[1]
+            cnt = ret[rr]
+            ret_dic[fn_name].append((lineno, cnt))
+        for fn in ret_dic:
+            mini = 99999
+            for val in ret_dic[fn]:
+                mini = min(mini, val[1])
+            new_list = []
+            for val in ret_dic[fn]:
+                if val[1] == mini:
+                    new_list.append(val)
+            ret_dic[fn] = new_list
+        print(ret_dic)
+        return ret
+
+
+    def getAllFunctionName(self, inputFileName):
+        f = open (inputFileName)
+        lines = f.read().splitlines()
+        f.close()
+        cnt = 0
+        ret = []
+        for line in lines:
+            cnt += 1
+            line = line.strip()
+            res = self.utility.Function_CallName(line)
+            if(res == 'null'):
+                continue
+            else:
+                ret.append((cnt, res))
+        return ret
 
     def addLineNumberBeforeStatement(self, inputFileName):
         #print("TheKing--> ", inputFileName)
@@ -378,7 +428,7 @@ class Detect_Sensitive_Code:
         return ret
 
 
-    def highlightHeuristics(self, inputFileName , trackOfBlock):
+    def highlightHeuristics(self, inputFileName , trackOfBlock, fn_name):
         f2 = open(inputFileName)
         l2 = f2.read().splitlines()
         f2.close()
@@ -440,19 +490,17 @@ class Detect_Sensitive_Code:
         #print(loop_temp)
         
 
-        #loop_final = self.calculateStatementsForLoopHeuristics(loop_temp)
+        loop_final = self.calculateStatementsForLoopHeuristics(loop_temp)
         ifelse_final = self.calculateStatementsForIfElseHeuristics(ifelse_temp)
+        function_nested_cnt = self.functioncall_Check( fn_name , loop_temp)
         #function_final = self.calculateStatementsForHeuristics(function_temp)
 
-        #print(ifelse_temp)
-        print(ifelse_final)
+        #print(loop_final)
+        #print(ifelse_final)
         #print(loop_final)
 
 
-        
 
-        
-        
 def main():
     obj = Detect_Sensitive_Code("EDCproneCode.cpp")
 
