@@ -81,8 +81,8 @@ class Highlight_Executed_Statements:
             if counter == 1:
                 continue
 
-            if(line.startswith("#")):
-                line = self.utility.Handeling_HeaderFile(line)
+            if(line.startswith("#") or ('<' in line) or ('>' in line)):
+                line = self.utility.Handeling_Html_Tag(line)
 
             if('freopen("Output.txt", "w+", stdout);' in line):
                 line = '{'

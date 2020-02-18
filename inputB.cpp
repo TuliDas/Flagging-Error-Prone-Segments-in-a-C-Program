@@ -1,58 +1,79 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
-#include<bits/stdc++.h>
+#include<stdio.h>
+#include<iostream>
 using namespace std;
-#define M 105
-int phi[105];
-vector <int> prime;
-bool mark[M];
-void sieve()
+int abc;
+int ttt;
+void FuctionTerminatingBranch(int s,int e)
 {
-printf("line = %d\n",__LINE__);    memset(mark,true,sizeof(mark));
-printf("line = %d\n",__LINE__);    prime.push_back(2);
-    for(int i=3; i*i<=M; i+=2)
+    if(s<0 || e>=100)
     {
-        if(mark[i])
-        {
-            for(int j=i*i; j<=M; j+=2*i)
-            {
-printf("line = %d\n",__LINE__);                mark[j]=false;
-            }
-        }
+printf("line = %d\n",__LINE__);        return;
     }
-    for(int i=3; i<=M; i+=2)
+printf("line = %d\n",__LINE__);    int sum = 0 ;
+printf("line = %d\n",__LINE__);    int ara[100];
+    for(int i=s;i<=e;i++)
     {
-        if(mark[i])
-        {
-printf("line = %d\n",__LINE__);            prime.push_back(i);
-        }
+printf("line = %d\n",__LINE__);        ara[i] = s ;
+    }
+    for(int i=s;i<=e;i++)
+    {
+printf("line = %d\n",__LINE__);        printf("%d\n",ara[i]);
     }
 }
-void phi_fun(int n)
+bool checkOddEven(int num)
 {
-    for(int i=1; i<=n; i++)
+    if(num%2==0)
     {
-printf("line = %d\n",__LINE__);        phi[i]=i;
+printf("line = %d\n",__LINE__);        return 0;
     }
-    for(int i=0; prime[i]<=n; i++)
-    {
-printf("line = %d\n",__LINE__);        int p=prime[i];
-        if(phi[p]==p)
-        {
-            for(int k=p; k<=n; k+=p)
-            {
-printf("line = %d\n",__LINE__);                phi[k]-=phi[k]/p;
-            }
-        }
-    }
+printf("line = %d\n",__LINE__);    return 1;
 }
 int main()
 { freopen("Output.txt", "w+", stdout);
-    sieve();
-    int n;
-    cin>>n;
-    phi_fun(n);
-    for(int i=1; i<=n; i++)
+    int a = 10;
+    int testAra[100];
+    int temp = 0 ;
+    for(int i=0;i<5;i++)
     {
-printf("line = %d\n",__LINE__);        cout<<"Phi["<<i<<"] = "<<phi[i]<<endl;
+        for(int j=0;j<5;j++)
+        {
+printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
+printf("line = %d\n",__LINE__);            testAra[i] = temp ;
+        }
     }
+    FuctionTerminatingBranch(2,20);
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+printf("line = %d\n",__LINE__);             int a = checkOddEven(j);
+            for(int k=0;k<3;k++)
+            {
+                
+printf("line = %d\n",__LINE__);                printf("%d %d %d\n",i,j,k);
+            }
+        }
+    }
+    if(a == 10)
+    {
+printf("line = %d\n",__LINE__);        int b = 10;
+printf("line = %d\n",__LINE__);        int c = b + 1;
+printf("line = %d\n",__LINE__);        int s = b + c;
+    }
+    else if (a == 20)
+    {
+printf("line = %d\n",__LINE__);        int b = 15;
+printf("line = %d\n",__LINE__);        int c = b++;
+printf("line = %d\n",__LINE__);        int s = c++;
+printf("line = %d\n",__LINE__);        int t = 100;
+    }
+    else
+    {
+printf("line = %d\n",__LINE__);        int b = 15;
+printf("line = %d\n",__LINE__);        int c = b+10;
+printf("line = %d\n",__LINE__);        int s = c+15;
+printf("line = %d\n",__LINE__);        int t = 100;
+    }
+    return 0;
 }

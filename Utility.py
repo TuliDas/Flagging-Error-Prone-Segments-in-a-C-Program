@@ -78,7 +78,7 @@ class Utility:
         
         return "null"
         
-    def Handeling_HeaderFile(self,line):
+    def Handeling_Html_Tag(self,line):
         if '<' not in line and '>' not in line :
             return line
 

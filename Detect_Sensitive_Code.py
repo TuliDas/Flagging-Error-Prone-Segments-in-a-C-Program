@@ -28,7 +28,7 @@ class Detect_Sensitive_Code:
         processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock) # -> InputB.cpp
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
-        #self.highlightStatements.highlightExecutedStatements(processedFileName)
+        self.highlightStatements.highlightExecutedStatements(processedFileName)
         self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName)
         print("Operation Successful")
         
@@ -502,7 +502,7 @@ class Detect_Sensitive_Code:
         
 
 def main():
-    obj = Detect_Sensitive_Code("EDCproneCode3.cpp")
+    obj = Detect_Sensitive_Code("EDCproneCode.cpp")
 
 if __name__ == '__main__':
     main()

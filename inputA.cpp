@@ -1,58 +1,79 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
-#include<bits/stdc++.h>
+#include<stdio.h>
+#include<iostream>
 using namespace std;
-#define M 105
-int phi[105];
-vector <int> prime;
-bool mark[M];
-void sieve()
+int abc;
+int ttt;
+void FuctionTerminatingBranch(int s,int e)
 {
-    memset(mark,true,sizeof(mark));
-    prime.push_back(2);
-    for(int i=3; i*i<=M; i+=2)
+    if(s<0 || e>=100)
     {
-        if(mark[i])
-        {
-            for(int j=i*i; j<=M; j+=2*i)
-            {
-                mark[j]=false;
-            }
-        }
+        return;
     }
-    for(int i=3; i<=M; i+=2)
+    int sum = 0 ;
+    int ara[100];
+    for(int i=s;i<=e;i++)
     {
-        if(mark[i])
-        {
-            prime.push_back(i);
-        }
+        ara[i] = s ;
+    }
+    for(int i=s;i<=e;i++)
+    {
+        printf("%d\n",ara[i]);
     }
 }
-void phi_fun(int n)
+bool checkOddEven(int num)
 {
-    for(int i=1; i<=n; i++)
+    if(num%2==0)
     {
-        phi[i]=i;
+        return 0;
     }
-    for(int i=0; prime[i]<=n; i++)
-    {
-        int p=prime[i];
-        if(phi[p]==p)
-        {
-            for(int k=p; k<=n; k+=p)
-            {
-                phi[k]-=phi[k]/p;
-            }
-        }
-    }
+    return 1;
 }
 int main()
 { freopen("Output.txt", "w+", stdout);
-    sieve();
-    int n;
-    cin>>n;
-    phi_fun(n);
-    for(int i=1; i<=n; i++)
+    int a = 10;
+    int testAra[100];
+    int temp = 0 ;
+    for(int i=0;i<5;i++)
     {
-        cout<<"Phi["<<i<<"] = "<<phi[i]<<endl;
+        for(int j=0;j<5;j++)
+        {
+            temp += checkOddEven(j);
+            testAra[i] = temp ;
+        }
     }
+    FuctionTerminatingBranch(2,20);
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+             int a = checkOddEven(j);
+            for(int k=0;k<3;k++)
+            {
+                
+                printf("%d %d %d\n",i,j,k);
+            }
+        }
+    }
+    if(a == 10)
+    {
+        int b = 10;
+        int c = b + 1;
+        int s = b + c;
+    }
+    else if (a == 20)
+    {
+        int b = 15;
+        int c = b++;
+        int s = c++;
+        int t = 100;
+    }
+    else
+    {
+        int b = 15;
+        int c = b+10;
+        int s = c+15;
+        int t = 100;
+    }
+    return 0;
 }
