@@ -15,7 +15,9 @@ class Utility:
     def Function_CallName(self,line):
         if re.search("[\w]+[\s]*[(][^)]*[)];", line) == None:
             return 'null'
-
+        if 'printf' in line or 'scanf' in line:
+            return 'null'
+            
         res = re.findall("[\w]+[\s]*[(][^)]*[)];", line)
         ret = ""
         for c in res[0]:
@@ -76,8 +78,6 @@ class Utility:
         
         return "null"
         
-
-
     def Handeling_HeaderFile(self,line):
         strr = ""
         for i in line:

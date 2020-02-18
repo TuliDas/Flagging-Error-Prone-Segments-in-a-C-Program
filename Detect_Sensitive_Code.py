@@ -5,18 +5,21 @@ import copy
 import Utility
 import ParenthesisBalance
 import HighlightExecutedStatements
+import HighlightHeuristics
 
 class Detect_Sensitive_Code:
     
     utility = None
     parenthesisBalance = None
-    highlightStatements = None 
+    highlightStatements = None
+    highlightHeuristics = None 
 
     def __init__(self, inputFileName):
         
         self.utility = Utility.Utility()
         self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
         self.highlightStatements = HighlightExecutedStatements.Highlight_Executed_Statements()
+        self.highlightHeuristics = HighlightHeuristics.Highlight_Heuristics()
 
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
         allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunction
@@ -24,8 +27,8 @@ class Detect_Sensitive_Code:
         getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
-        self.highlightStatements.highlightExecutedStatements(processedFileName)
-        #self.highlightHeuristics(processedFileName , getTrackOfBlock, allFunctionName)
+        #self.highlightStatements.highlightExecutedStatements(processedFileName)
+        self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName)
         print("Operation Successful")
         
 
@@ -77,57 +80,7 @@ class Detect_Sensitive_Code:
         f.close()
         return fileName
 
-    def functioncall_Check(self, fn_list, loop_list):
-        ret = {}
-        st = []
-        st.append([-1,-1])
-        for ls in loop_list:
-            sz = len(st)
-            if ls[0] == 0:
-                for ln in fn_list:
-                    if ln[0] == ls[1]:
-                        ret[ln] = sz
-                        break
-            elif ls[0] == st[sz - 1][0]:
-                st.pop()
-            else:
-                st.append(ls)
-        ret_dic = {}
-        for rr in ret.keys():
-            ret_dic[rr[1]] = []
-        for rr in ret.keys():
-            lineno = rr[0]
-            fn_name = rr[1]
-            cnt = ret[rr]
-            ret_dic[fn_name].append((lineno, cnt))
-        for fn in ret_dic:
-            mini = 99999
-            for val in ret_dic[fn]:
-                mini = min(mini, val[1])
-            new_list = []
-            for val in ret_dic[fn]:
-                if val[1] == mini:
-                    new_list.append(val)
-            ret_dic[fn] = new_list
-        print(ret_dic)
-        return ret
 
-
-    def getAllFunctionName(self, inputFileName):
-        f = open (inputFileName)
-        lines = f.read().splitlines()
-        f.close()
-        cnt = 0
-        ret = []
-        for line in lines:
-            cnt += 1
-            line = line.strip()
-            res = self.utility.Function_CallName(line)
-            if(res == 'null'):
-                continue
-            else:
-                ret.append((cnt, res))
-        return ret
 
     def addLineNumberBeforeStatement(self, inputFileName):
         #print("TheKing--> ", inputFileName)
@@ -274,8 +227,6 @@ class Detect_Sensitive_Code:
         return outputFileName 
 
 
-
-
     def calculateStatementsForHeuristics(self, instruction_set):
         instruction_set.append([-1, -1])
         ret = {}
@@ -297,11 +248,141 @@ class Detect_Sensitive_Code:
         
         return ret
 
+    def calculateFunctioncallLevel(self, fn_list, loop_list):
+        ret = {}
+        st = []
+        st.append([-1,-1])
+        for ls in loop_list:
+            sz = len(st)
+            if ls[0] == 0:
+                for ln in fn_list:
+                    if ln[0] == ls[1]:
+                        ret[ln] = sz
+                        break
+            elif ls[0] == st[sz - 1][0]:
+                st.pop()
+            else:
+                st.append(ls)
+        ret_dic = {}
+        for rr in ret.keys():
+            ret_dic[rr[1]] = []
+        for rr in ret.keys():
+            lineno = rr[0]
+            fn_name = rr[1]
+            cnt = ret[rr]
+            ret_dic[fn_name].append((lineno, cnt))
+        for fn in ret_dic:
+            mini = 99999
+            for val in ret_dic[fn]:
+                mini = min(mini, val[1])
+            new_list = []
+            for val in ret_dic[fn]:
+                if val[1] == mini:
+                    new_list.append(val)
+            ret_dic[fn] = new_list
+        #print(ret_dic)
+        return ret
 
-    def highlightHeuristics(self, inputFileName , trackOfBlock, fn_name):
+
+    def getAllFunctionName(self, inputFileName):
+        f = open (inputFileName)
+        lines = f.read().splitlines()
+        f.close()
+        cnt = 0
+        ret = []
+        for line in lines:
+            cnt += 1
+            line = line.strip()
+            res = self.utility.Function_CallName(line)
+            if(res == 'null'):
+                continue
+            else:
+                ret.append((cnt, res))
+        return ret
+    
+    def getOptimalHeuristics(self,info):
+        #print(info)
+        ans = []
+        mx_freq = -1
+        for i in info.keys():
+            if(i[0] == 1):
+                if info[i] >= mx_freq:
+                    mx_freq = info[i]
+
+        for i in info.keys():
+            if info[i] == mx_freq and i[0] == 1:
+                ans.append(i[1])
+
+        #print(ans)
+        return ans
+
+    def getFunctionStatement(self,info):
+        ans = {}
+
+        for i in info.keys():
+            if(i[0] == -1):
+                continue
+            ans[i[1] - 1] = info[i]
+
+        ans = sorted(ans.items(), key=lambda kv: kv[1])
+        return ans  
+    
+    def findFunctionDefinition(self, inputFileName ,info,H3,fun):
+        fun2 = {}
         f2 = open(inputFileName)
         l2 = f2.read().splitlines()
         f2.close()
+
+        for i in info:
+            strr = i
+            cnt = 0
+
+            for line in l2:
+                cnt += 1
+                
+                if( cnt not in fun.keys()):
+                    continue
+                
+                if (strr in line) and (cnt in fun.keys()):
+                    fun2[cnt] = fun[cnt]  
+        
+        cnt = 0
+        for line in l2:
+            cnt += 1
+            if ( ( 'return' in line ) and self.ifInsideBlock(fun2,cnt) ) :
+                H3.append(cnt)
+
+        #print(H3)    
+        return H3
+        
+
+    def findResultantFunction(self,info):
+        temp = []
+        ans = []
+        mn_lvl = 1000000000000 
+        for i in info.keys():
+            if info[i] < 2 :
+                continue
+            if info[i] < mn_lvl :
+                mn_lvl = info[i]
+
+        for i in info.keys():
+            if info[i] == mn_lvl:
+                temp.append(i[0])
+                if i[1] not in ans:
+                    ans.append(i[1])
+
+        #print(temp)
+        #print(ans)
+        return ans,temp
+
+
+    def getAllHeuristicsAndHighlight(self, inputFileName , trackOfBlock, fn_name):
+
+        f2 = open(inputFileName)
+        l2 = f2.read().splitlines()
+        f2.close()
+        fileName = "InputA.cpp"
         loop_temp = []
         ifelse_temp = []
         function_temp = []
@@ -345,31 +426,30 @@ class Detect_Sensitive_Code:
                     temp = [int(word[1]) , int(word[4])]
                     function_temp.append(temp)
                     continue
+    
         
-        '''
-        if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
-        else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
-        elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
-        function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
-        loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
-        loop_level = self.parenthesisBalance.LoopLeveling(loop_dict)
-        mergedIfElse = dict()
-        mergedIfElse.update(if_dict)
-        mergedIfElse.update(else_dict)
-        mergedIfElse.update(elseIf_dict)
-        '''
-        #print(loop_temp)
-        
-
-        loop_final = self.calculateStatementsForHeuristics(loop_temp)
+        # --- ifElse Heuristics --- #
         ifelse_final = self.calculateStatementsForHeuristics(ifelse_temp)
-        function_nested_cnt = self.functioncall_Check( fn_name , loop_temp)
-        #function_final = self.calculateStatementsForHeuristics(function_temp)
+        H1_IfElseifElse = self.getOptimalHeuristics(ifelse_final)
 
-        #print(loop_final)
-        #print(ifelse_final)
-        #print(loop_final)
+        for i in range(len(H1_IfElseifElse)):
+            H1_IfElseifElse[i] -= 1
+        
+        # ------ Loop Terminating Branch ---- #
+        loop_final = self.calculateStatementsForHeuristics(loop_temp)
+        H2_Loop = self.getOptimalHeuristics(loop_final)
 
+        # ------- Function Terminating Branch -----# 
+        H3_Function = [] 
+        function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
+        function_final = self.calculateStatementsForHeuristics(function_temp)
+        function_final = self.getFunctionStatement(function_final)
+        function_level_cnt = self.calculateFunctioncallLevel( fn_name , loop_temp)
+        function_ans , H3_Function = self.findResultantFunction(function_level_cnt)
+        H3_Function = self.findFunctionDefinition(fileName, function_ans , H3_Function,function_dict)
+               
+        
+        self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H2_Loop,H3_Function)
 
 
 def main():

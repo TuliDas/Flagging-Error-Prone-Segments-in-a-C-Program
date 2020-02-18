@@ -38,16 +38,17 @@ printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);        for(i
         {
 printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
 printf("line = %d\n",__LINE__);            testAra[i] = temp ;
-            
         }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
     }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
+printf("line = %d\n",__LINE__);    FuctionTerminatingBranch(2,20);
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    for(int i=0;i<3;i++)
     {
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);        for(int j=0;j<3;j++)
         {
+printf("line = %d\n",__LINE__);             int a = checkOddEven(j);
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);            for(int k=0;k<3;k++)
             {
-printf("line = %d\n",__LINE__);                 int a = checkOddEven(k);
+                
 printf("line = %d\n",__LINE__);                printf("%d %d %d\n",i,j,k);
             }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
         }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);

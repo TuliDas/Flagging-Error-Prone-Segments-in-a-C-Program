@@ -8,6 +8,7 @@ void FuctionTerminatingBranch(int s,int e)
     {
         return;
     }
+
     int sum = 0 ;
     int ara[100];
     for(int i=s;i<=e;i++)
@@ -44,31 +45,25 @@ int main()
     {
         for(int j=0;j<5;j++)
         {
-
-
             temp += checkOddEven(j);
             testAra[i] = temp ;
-
-            
         }
     }
 
-
+    FuctionTerminatingBranch(2,20);
 
     for(int i=0;i<3;i++)
     {
         for(int j=0;j<3;j++)
         {
+             int a = checkOddEven(j);
             for(int k=0;k<3;k++)
             {
-                 int a = checkOddEven(k);
+                
                 printf("%d %d %d\n",i,j,k);
             }
         }
     }
-
-
-
 
     if(a == 10)
     {

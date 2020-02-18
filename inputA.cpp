@@ -38,16 +38,17 @@ int main()
         {
             temp += checkOddEven(j);
             testAra[i] = temp ;
-            
         }
     }
+    FuctionTerminatingBranch(2,20);
     for(int i=0;i<3;i++)
     {
         for(int j=0;j<3;j++)
         {
+             int a = checkOddEven(j);
             for(int k=0;k<3;k++)
             {
-                 int a = checkOddEven(k);
+                
                 printf("%d %d %d\n",i,j,k);
             }
         }

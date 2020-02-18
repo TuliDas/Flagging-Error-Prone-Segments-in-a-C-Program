@@ -38,16 +38,17 @@ printf("line = %d\n",__LINE__);    int temp = 0 ;
         {
 printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
 printf("line = %d\n",__LINE__);            testAra[i] = temp ;
-            
         }
     }
+printf("line = %d\n",__LINE__);    FuctionTerminatingBranch(2,20);
     for(int i=0;i<3;i++)
     {
         for(int j=0;j<3;j++)
         {
+printf("line = %d\n",__LINE__);             int a = checkOddEven(j);
             for(int k=0;k<3;k++)
             {
-printf("line = %d\n",__LINE__);                 int a = checkOddEven(k);
+                
 printf("line = %d\n",__LINE__);                printf("%d %d %d\n",i,j,k);
             }
         }
