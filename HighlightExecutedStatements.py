@@ -85,8 +85,7 @@ class Highlight_Executed_Statements:
                 line = self.utility.Handeling_HeaderFile(line)
 
             if('freopen("Output.txt", "w+", stdout);' in line):
-                stringfff += '<p style="font-family:verdana;font-weight:bold;color:black">' + '{' + '</p>\n'
-                
+                line = '{'
             elif counter in lineNumbers:
                 cc = 0
                 for x in lineNumbers:

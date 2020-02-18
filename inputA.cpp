@@ -1,77 +1,58 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
-#include<stdio.h>
-#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
-void FuctionTerminatingBranch(int s,int e)
+#define M 105
+int phi[105];
+vector <int> prime;
+bool mark[M];
+void sieve()
 {
-    if(s<0 || e>=100)
+    memset(mark,true,sizeof(mark));
+    prime.push_back(2);
+    for(int i=3; i*i<=M; i+=2)
     {
-        return;
-    }
-    int sum = 0 ;
-    int ara[100];
-    for(int i=s;i<=e;i++)
-    {
-        ara[i] = s ;
-    }
-    for(int i=s;i<=e;i++)
-    {
-        printf("%d\n",ara[i]);
-    }
-}
-bool checkOddEven(int num)
-{
-    if(num%2==0)
-    {
-        return 0;
-    }
-    return 1;
-}
-int main()
-{ freopen("Output.txt", "w+", stdout);
-    int a = 10;
-    int testAra[100];
-    int temp = 0 ;
-    for(int i=0;i<5;i++)
-    {
-        for(int j=0;j<5;j++)
+        if(mark[i])
         {
-            temp += checkOddEven(j);
-            testAra[i] = temp ;
-        }
-    }
-    FuctionTerminatingBranch(2,20);
-    for(int i=0;i<3;i++)
-    {
-        for(int j=0;j<3;j++)
-        {
-             int a = checkOddEven(j);
-            for(int k=0;k<3;k++)
+            for(int j=i*i; j<=M; j+=2*i)
             {
-                
-                printf("%d %d %d\n",i,j,k);
+                mark[j]=false;
             }
         }
     }
-    if(a == 10)
+    for(int i=3; i<=M; i+=2)
     {
-        int b = 10;
-        int c = b + 1;
-        int s = b + c;
+        if(mark[i])
+        {
+            prime.push_back(i);
+        }
     }
-    else if (a == 20)
+}
+void phi_fun(int n)
+{
+    for(int i=1; i<=n; i++)
     {
-        int b = 15;
-        int c = b++;
-        int s = c++;
-        int t = 100;
+        phi[i]=i;
     }
-    else
+    for(int i=0; prime[i]<=n; i++)
     {
-        int b = 15;
-        int c = b+10;
-        int s = c+15;
-        int t = 100;
+        int p=prime[i];
+        if(phi[p]==p)
+        {
+            for(int k=p; k<=n; k+=p)
+            {
+                phi[k]-=phi[k]/p;
+            }
+        }
     }
-    return 0;
+}
+int main()
+{ freopen("Output.txt", "w+", stdout);
+    sieve();
+    int n;
+    cin>>n;
+    phi_fun(n);
+    for(int i=1; i<=n; i++)
+    {
+        cout<<"Phi["<<i<<"] = "<<phi[i]<<endl;
+    }
 }

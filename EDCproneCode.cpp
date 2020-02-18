@@ -2,6 +2,9 @@
 #include<iostream>
 using namespace std;
 
+int abc;
+int ttt;
+
 void FuctionTerminatingBranch(int s,int e)
 {
     if(s<0 || e>=100)

@@ -22,10 +22,11 @@ class Detect_Sensitive_Code:
         self.highlightHeuristics = HighlightHeuristics.Highlight_Heuristics()
 
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
-        allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunction
-        processedFileName = self.addLineNumberBeforeStatement(processedFileName) # -> InputB.cpp
+        allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunctionName
         getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
-        processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock) #-> inputC.cpp
+        justBlock = self.updateBlock(getTrackOfBlock)  # -> block start and end report
+        processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock) # -> InputB.cpp
+        processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         #self.highlightStatements.highlightExecutedStatements(processedFileName)
         self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName)
@@ -82,9 +83,7 @@ class Detect_Sensitive_Code:
 
 
 
-    def addLineNumberBeforeStatement(self, inputFileName):
-        #print("TheKing--> ", inputFileName)
-
+    def addLineNumberBeforeStatement(self, inputFileName,blockTrack):
         f = open (inputFileName)
         lines = f.read().splitlines()
         f.close()
@@ -105,11 +104,16 @@ class Detect_Sensitive_Code:
                 f.write('\n')
                 continue
 
-            if (  ("{" in line) or ("}" in line) ):
+            if ( self.ifInsideBlock(blockTrack , cnt) == False):
                 f.write(line)
                 f.write('\n')
                 continue
 
+
+            if (  ("{" in line) or ("}" in line) ):
+                f.write(line)
+                f.write('\n')
+                continue
 
             if(line==""):
                 continue
@@ -129,7 +133,7 @@ class Detect_Sensitive_Code:
                 continue
             
             res = self.utility.Statement_Get(line)
-            if self.utility.Loop_Check(line) == False:
+            if self.utility.Loop_Check(line) == False and self.ifInsideBlock(blockTrack,cnt)==True:
                 if len(res) > 0:
                     for x in res:
                         f.write('printf("line = %d\\n",__LINE__);')
@@ -158,8 +162,16 @@ class Detect_Sensitive_Code:
                 return True
         return False
 
+    def updateBlock(self,info):
+        #print(info)
+        temp = {}
+        for i in info.keys():
+            temp[i] = info[i][0]
 
-    def addBlockwiseLineNumber(self, inputFileName, trackOfBlock):
+        #print(temp)
+        return temp
+
+    def addBlockwiseLineNumber(self, inputFileName, trackOfBlock,blockTrack):
         reader = open(inputFileName)
         fileName = "InputC.cpp"
         writer = open(fileName, "w")
@@ -184,7 +196,7 @@ class Detect_Sensitive_Code:
             cnt = cnt + 1
 
             strToWrite = ''
-            if 'return' in line:
+            if 'return' in line and self.ifInsideBlock(blockTrack,cnt):
                 ss = self.utility.Statement_Get(line)
                 if self.ifInsideBlock(mergedIfElse, cnt):
                     strToWrite = strToWrite + 'printf("ifelse_end_id %d line = %d\\n", global_ifelse_id--, __LINE__);'
@@ -354,7 +366,43 @@ class Detect_Sensitive_Code:
 
         #print(H3)    
         return H3
+
+    def discardBuiltInFunction(self,level,track):
+        l1 = []
+        l2 = []
+        for i in track.keys():
+            l1.append(i)
         
+        for i in level.keys():
+            l2.append(i[1])
+    
+
+        f2 = open('InputA.cpp')
+        l3 = f2.read().splitlines()
+        f2.close()
+        
+        l_final = []
+        cnt = 0
+
+        for line in l3:
+            cnt += 1
+            if cnt in l1:
+                for i in l2:
+                    if i in line:
+                        l_final.append(i)
+                        break
+        
+        temp = {}
+
+        for i in level.keys():
+            if i[1] not in l_final:
+                continue
+            j = (i[0],i[1])
+            temp[j] = level[i]
+        
+        #print(level)
+        #print(temp)
+        return temp        
 
     def findResultantFunction(self,info):
         temp = []
@@ -445,15 +493,16 @@ class Detect_Sensitive_Code:
         function_final = self.calculateStatementsForHeuristics(function_temp)
         function_final = self.getFunctionStatement(function_final)
         function_level_cnt = self.calculateFunctioncallLevel( fn_name , loop_temp)
+        function_level_cnt = self.discardBuiltInFunction(function_level_cnt,function_dict)
         function_ans , H3_Function = self.findResultantFunction(function_level_cnt)
         H3_Function = self.findFunctionDefinition(fileName, function_ans , H3_Function,function_dict)
                
         
         self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H2_Loop,H3_Function)
-
+        
 
 def main():
-    obj = Detect_Sensitive_Code("EDCproneCode.cpp")
+    obj = Detect_Sensitive_Code("EDCproneCode3.cpp")
 
 if __name__ == '__main__':
     main()

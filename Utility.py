@@ -15,8 +15,8 @@ class Utility:
     def Function_CallName(self,line):
         if re.search("[\w]+[\s]*[(][^)]*[)];", line) == None:
             return 'null'
-        if 'printf' in line or 'scanf' in line:
-            return 'null'
+        #if 'printf' in line or 'scanf' in line:
+            #return 'null'
             
         res = re.findall("[\w]+[\s]*[(][^)]*[)];", line)
         ret = ""
@@ -79,6 +79,9 @@ class Utility:
         return "null"
         
     def Handeling_HeaderFile(self,line):
+        if '<' not in line and '>' not in line :
+            return line
+
         strr = ""
         for i in line:
             if(i=='<' or i=='>'):
