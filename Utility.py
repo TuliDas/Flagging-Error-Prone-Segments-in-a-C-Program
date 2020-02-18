@@ -29,7 +29,7 @@ class Utility:
 
 
     def Loop_Check(self,line):
-        if re.search("for[\s]*[(].*[)]", line) == None:
+        if (re.search("for[\s]*[(].*[)]", line) == None)  and (re.search("while[\s]*[(].*[)]", line) == None):
             return False
         return True
         

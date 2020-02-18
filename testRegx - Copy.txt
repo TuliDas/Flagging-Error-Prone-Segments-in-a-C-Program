@@ -24,6 +24,8 @@ int a = 5 ; int b = 10 ; int a = 5 ; p+=5;
 # c++ for loop
 // for[\s]*[(].*[)]
 for(int i=1;i<=a;i++)
+
+// while[\s]*[(].*[)]
 while(i<0)
 
 

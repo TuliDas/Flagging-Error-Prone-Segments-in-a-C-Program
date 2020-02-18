@@ -43,6 +43,11 @@ printf("line = %d\n",__LINE__);            testAra[i] = temp ;
         }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
     }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
     FuctionTerminatingBranch(2,20);
+    int z = 1000;
+printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    while(z--)
+    {
+printf("line = %d\n",__LINE__);        int t = 10;
+    }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    for(int i=0;i<3;i++)
     {
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);        for(int j=0;j<3;j++)

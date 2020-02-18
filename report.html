@@ -42,6 +42,11 @@
 <p style="font-family:verdana;font-weight:bold;color:black">        }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    FuctionTerminatingBranch(2,20);</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    int z = 1000;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    while(z--)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:red">        int t = 10;   //(MOST SENSITIVE portion), executed 1000 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    for(int i=0;i< 3;i++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    {</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        for(int j=0;j< 3;j++)</p>
@@ -50,7 +55,7 @@
 <p style="font-family:verdana;font-weight:bold;color:black">            for(int k=0;k< 3;k++)</p>
 <p style="font-family:verdana;font-weight:bold;color:black">            {</p>
 <p style="font-family:verdana;font-weight:bold;color:black">                </p>
-<p style="font-family:verdana;font-weight:bold;color:red">                printf("%d %d %d\n",i,j,k);   //(MOST SENSITIVE portion), executed 27 times</p>
+<p style="font-family:verdana;font-weight:bold;color:orange">                printf("%d %d %d\n",i,j,k);   //executed 27 times</p>
 <p style="font-family:verdana;font-weight:bold;color:black">            }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">        }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    }</p>

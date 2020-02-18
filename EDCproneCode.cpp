@@ -55,6 +55,12 @@ int main()
 
     FuctionTerminatingBranch(2,20);
 
+    int z = 1000;
+    while(z--)
+    {
+        int t = 10;
+    }
+
     for(int i=0;i<3;i++)
     {
         for(int j=0;j<3;j++)
