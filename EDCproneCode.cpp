@@ -38,9 +38,7 @@ bool checkOddEven(int num)
 
 int main()
 {
-    int a = 10;
-
-    int testAra[100];
+    int a = 10; int testAra[100];
 
     int temp = 0 ;
 
@@ -55,7 +53,7 @@ int main()
 
     FuctionTerminatingBranch(2,20);
 
-    int z = 1000;
+    int z = 13;
     while(z--)
     {
         int t = 10;

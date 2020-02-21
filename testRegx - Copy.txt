@@ -18,8 +18,10 @@ Int ret = checkOddEven(a);
 
 # C++ statement
 [^;]+;
-int a = 5 ; int b = 10 ; int a = 5 ; p+=5;
-
+int a = 5 ;  
+int b = 10 ;
+p+=5;
+int a = 5 ; 
 
 # c++ for loop
 // for[\s]*[(].*[)]

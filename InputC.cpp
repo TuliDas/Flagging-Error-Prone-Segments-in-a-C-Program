@@ -31,9 +31,9 @@ printf("line = %d\n",__LINE__);printf("function_end_id %d line = %d\n", global_f
 printf("function_end_id %d line = %d\n", global_function_id--, __LINE__);}
 int main()
 { freopen("Output.txt", "w+", stdout);
-    int a = 10;
-    int testAra[100];
-    int temp = 0 ;
+printf("line = %d\n",__LINE__);    int a = 10;
+printf("line = %d\n",__LINE__); int testAra[100];
+printf("line = %d\n",__LINE__);    int temp = 0 ;
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    for(int i=0;i<5;i++)
     {
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);        for(int j=0;j<5;j++)
@@ -42,8 +42,8 @@ printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
 printf("line = %d\n",__LINE__);            testAra[i] = temp ;
         }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
     }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
-    FuctionTerminatingBranch(2,20);
-    int z = 1000;
+printf("line = %d\n",__LINE__);    FuctionTerminatingBranch(2,20);
+printf("line = %d\n",__LINE__);    int z = 13;
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    while(z--)
     {
 printf("line = %d\n",__LINE__);        int t = 10;
@@ -80,5 +80,5 @@ printf("line = %d\n",__LINE__);        int c = b+10;
 printf("line = %d\n",__LINE__);        int s = c+15;
 printf("line = %d\n",__LINE__);        int t = 100;
 printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);    }
-    return 0;
+printf("line = %d\n",__LINE__);    return 0;
 }

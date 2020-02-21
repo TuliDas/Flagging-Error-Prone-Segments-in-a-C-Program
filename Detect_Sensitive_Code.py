@@ -23,9 +23,11 @@ class Detect_Sensitive_Code:
 
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
         allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunctionName
-        getTrackOfBlock = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
+        getTrackOfBlock,start_main = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
+        #print(getTrackOfBlock)
+        print(start_main)
         justBlock = self.updateBlock(getTrackOfBlock)  # -> block start and end report
-        processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock) # -> InputB.cpp
+        processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         self.highlightStatements.highlightExecutedStatements(processedFileName)
@@ -83,7 +85,7 @@ class Detect_Sensitive_Code:
 
 
 
-    def addLineNumberBeforeStatement(self, inputFileName,blockTrack):
+    def addLineNumberBeforeStatement(self, inputFileName,blockTrack,start_main):
         f = open (inputFileName)
         lines = f.read().splitlines()
         f.close()
@@ -95,6 +97,9 @@ class Detect_Sensitive_Code:
 
         for line in lines:
             cnt+=1
+            
+            
+
             if "global_loop_id" in line and "global_ifelse_id" in line and "global_function_id" in line:
                 f.write(line)
                 f.write('\n')
@@ -104,10 +109,10 @@ class Detect_Sensitive_Code:
                 f.write('\n')
                 continue
 
-            if ( self.ifInsideBlock(blockTrack , cnt) == False):
-                f.write(line)
-                f.write('\n')
-                continue
+            #if ( self.ifInsideBlock(blockTrack , cnt) == False):
+                #f.write(line)
+                #f.write('\n')
+                #continue
 
 
             if (  ("{" in line) or ("}" in line) ):
@@ -120,26 +125,21 @@ class Detect_Sensitive_Code:
 
             words = line.split()
                 
-            #FUNCTION CHECK#
-            if self.utility.Function_Check(line) == True:
+            #FUNCTION CHECK , LOOP CHECK#
+            if self.utility.Function_Check(line) == True or self.utility.Loop_Check(line) == True:
                 f.write(line)
                 f.write('\n')
                 continue
 
-            #STATEMENT CHECK#
+            #HEADER CHECK#
             if "using" in words and "namespace" in words:
                 f.write(line)
                 f.write('\n')
                 continue
-            
-            res = self.utility.Statement_Get(line)
-            if self.utility.Loop_Check(line) == False and self.ifInsideBlock(blockTrack,cnt)==True:
-                if len(res) > 0:
-                    for x in res:
-                        f.write('printf("line = %d\\n",__LINE__);')
-                        f.write(x)
-                        f.write('\n')
-                else:
+            #  or
+            #print(str(cnt) + ' -> ' + line)
+            if  self.utility.Statement_Check(line) and  (self.ifInsideBlock(blockTrack,cnt) or (cnt >= start_main) ) :
+                    f.write('printf("line = %d\\n",__LINE__);')
                     f.write(line)
                     f.write('\n')
             else:

@@ -13,15 +13,19 @@ class Parenthesis_Balance:
         lines = f.read().splitlines()
         f.close()
         
+        
         track_dict = {}
         test = 0
         no = 0
         stack=[]
         strr = ["start"]
+        main_line_no = 0
 
         for z in lines:
             line = z.strip() #space removal
             no = no + 1
+            if (line == 'int main()'):
+                main_line_no = no 
             strr.append(line)
 
             
@@ -53,10 +57,9 @@ class Parenthesis_Balance:
                         #print(stack)
                         stack.clear()
 
-        #for i in track_dict:
-            #print(str(i) + '-> '+ str(track_dict[i]))
-
-        return track_dict
+        
+        #print(track_dict)
+        return track_dict,main_line_no
 
     def IfTrackCalculation(self,TrackOfBlock):
 

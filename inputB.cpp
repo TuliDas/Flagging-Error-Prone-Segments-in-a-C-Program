@@ -31,9 +31,9 @@ printf("line = %d\n",__LINE__);    return 1;
 }
 int main()
 { freopen("Output.txt", "w+", stdout);
-    int a = 10;
-    int testAra[100];
-    int temp = 0 ;
+printf("line = %d\n",__LINE__);    int a = 10;
+printf("line = %d\n",__LINE__); int testAra[100];
+printf("line = %d\n",__LINE__);    int temp = 0 ;
     for(int i=0;i<5;i++)
     {
         for(int j=0;j<5;j++)
@@ -42,8 +42,8 @@ printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
 printf("line = %d\n",__LINE__);            testAra[i] = temp ;
         }
     }
-    FuctionTerminatingBranch(2,20);
-    int z = 1000;
+printf("line = %d\n",__LINE__);    FuctionTerminatingBranch(2,20);
+printf("line = %d\n",__LINE__);    int z = 13;
     while(z--)
     {
 printf("line = %d\n",__LINE__);        int t = 10;
@@ -80,5 +80,5 @@ printf("line = %d\n",__LINE__);        int c = b+10;
 printf("line = %d\n",__LINE__);        int s = c+15;
 printf("line = %d\n",__LINE__);        int t = 100;
     }
-    return 0;
+printf("line = %d\n",__LINE__);    return 0;
 }
