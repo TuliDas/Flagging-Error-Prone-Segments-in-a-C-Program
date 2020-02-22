@@ -30,7 +30,7 @@ class Detect_Sensitive_Code:
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         self.highlightStatements.highlightExecutedStatements(processedFileName)
-        self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName)
+        self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
         print("Operation Successful")
         
 
@@ -90,7 +90,9 @@ class Detect_Sensitive_Code:
         strr.append('begin')
 
         for line in lines:
+            line = line.strip()
             strr.append(line)
+        return strr
 
 
     def addLineNumberBeforeStatement(self, inputFileName,blockTrack,start_main):
@@ -433,7 +435,7 @@ class Detect_Sensitive_Code:
         return ans,temp
 
 
-    def getAllHeuristicsAndHighlight(self, inputFileName , trackOfBlock, fn_name):
+    def getAllHeuristicsAndHighlight(self, inputFileName , trackOfBlock, fn_name,strr):
 
         f2 = open(inputFileName)
         l2 = f2.read().splitlines()
@@ -488,7 +490,6 @@ class Detect_Sensitive_Code:
         if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
         else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
         elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
-
         mergedIfElse = dict()
         mergedIfElse.update(if_dict)
         mergedIfElse.update(else_dict)
@@ -517,6 +518,7 @@ class Detect_Sensitive_Code:
             for j in range(a,b):
                 H2_Sub.append(j)
 
+
         # ------- Function Terminating Branch -----# 
         H3_Function = [] 
         H3_Sub = []
@@ -527,8 +529,16 @@ class Detect_Sensitive_Code:
         function_level_cnt = self.discardBuiltInFunction(function_level_cnt,function_dict)
         function_ans , H3_Function = self.findResultantFunction(function_level_cnt)
         H3_Function = self.findFunctionDefinition(fileName, function_ans , H3_Function,function_dict)
-               
         
+        for i in H3_Function:
+            if strr[i].startswith('return'):
+                continue
+            name = self.utility.Function_CallName(strr[i])
+            for j in function_dict.keys():
+                if name in strr[j] :
+                    for k in range(j,function_dict[j]+1):
+                        H3_Sub.append(k)
+
         self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H1_Sub,H2_Loop,H2_Sub,H3_Function,H3_Sub)
         
 
