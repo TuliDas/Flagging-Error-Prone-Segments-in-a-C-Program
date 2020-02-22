@@ -50,9 +50,9 @@ int main()
     {
         int t = 10;
     }
-    for(int i=0;i<3;i++)
+    for(int i=0;i<100;i++)
     {
-        for(int j=0;j<3;j++)
+        for(int j=0;j<100;j++)
         {
              int a = checkOddEven(j);
             for(int k=0;k<3;k++)

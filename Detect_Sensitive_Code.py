@@ -154,7 +154,7 @@ class Detect_Sensitive_Code:
             if 'return' in line and self.ifInsideBlock(blockTrack,cnt):
                 if self.ifInsideBlock(function_dict, cnt):
                     (startingPoint, endPoint) = self.getBlockRange(function_dict, cnt)
-                    line = 'printf("Time = %lld , (' +str(startingPoint)+', '+str(endPoint)+') \\n", getTicks() - startTime'+str(startingPoint)+');' + line
+                    line = 'printf("Time = %lld , ( ' +str(startingPoint)+' , '+str(endPoint)+' ) \\n", getTicks() - startTime'+str(startingPoint)+');' + line
                 
                 writer.write(line)
                 writer.write('\n')
@@ -166,21 +166,21 @@ class Detect_Sensitive_Code:
                 trackerCnt+=1
             if self.checkIfExists(function_dict, cnt):
                 startingPoint = self.getStartingLineNumber(function_dict, cnt)
-                line = 'printf("Time = %lld , (' +str(startingPoint)+', '+str(cnt)+') \\n", getTicks() - startTime'+str(startingPoint)+');' + line
+                line = 'printf("Time = %lld , ( ' +str(startingPoint)+' , '+str(cnt)+' ) \\n", getTicks() - startTime'+str(startingPoint)+');' + line
                 trackerCnt-=1
             if (cnt - 1) in mergedIfElse:
                 line += 'auto startTime' + str(cnt-1)+' = getTicks();'
                 trackerCnt+=1
             if self.checkIfExists(mergedIfElse, cnt):
                 startingPoint = self.getStartingLineNumber(mergedIfElse, cnt)
-                line = 'printf("Time = %lld , (' +str(startingPoint)+', '+str(cnt)+') \\n", getTicks() - startTime'+str(startingPoint)+');' + line
+                line = 'printf("Time = %lld , ( ' +str(startingPoint)+' , '+str(cnt)+' ) \\n", getTicks() - startTime'+str(startingPoint)+');' + line
                 trackerCnt-=1
             if (cnt) in loop_dict:
                 line = 'auto startTime' + str(cnt)+' = getTicks();' + line
                 trackerCnt+=1
             if self.checkIfExists(loop_dict, cnt):
                 startingPoint = self.getStartingLineNumber(loop_dict, cnt)
-                line += 'printf("Time = %lld , (' +str(startingPoint)+', '+str(cnt)+') \\n", getTicks() - startTime'+str(startingPoint)+');'
+                line += 'printf("Time = %lld , ( ' +str(startingPoint)+' , '+str(cnt)+' ) \\n", getTicks() - startTime'+str(startingPoint)+');'
                 trackerCnt-=1          
 
             writer.write(line)
@@ -188,6 +188,47 @@ class Detect_Sensitive_Code:
         
         writer.close()
         reader.close()
+
+        cmd = fileName
+        subprocess.call(["g++", "-std=c++11", "-o", "e", cmd]) 
+        subprocess.call("e.exe")
+
+        fileName = "Output.txt"
+        reader = open(fileName, "r")
+        lines = reader.read().splitlines()
+        ifelse_exe = {}
+        loop_exe = {}
+        function_exe = {}
+
+        for line in lines:
+            if "Time" in line:
+                words = line.split()
+                startBlock = int(words[5])
+                endBlock = int(words[7])
+                time = int(words[2])
+                
+
+                if startBlock in function_dict.keys() and function_dict[startBlock]==endBlock:
+                    if (startBlock, endBlock) in function_exe:
+                        function_exe[(startBlock, endBlock)] = max(function_exe[(startBlock, endBlock)], time)
+                    else:
+                        function_exe[(startBlock, endBlock)] = time
+                elif startBlock in mergedIfElse.keys() and mergedIfElse[startBlock]==endBlock:
+                    if (startBlock, endBlock) in ifelse_exe:
+                        ifelse_exe[(startBlock, endBlock)] = max(ifelse_exe[(startBlock, endBlock)], time)
+                    else:
+                        ifelse_exe[(startBlock, endBlock)] = time
+                elif startBlock in loop_dict.keys() and loop_dict[startBlock]==endBlock:
+                    if (startBlock, endBlock) in loop_exe:
+                        loop_exe[(startBlock, endBlock)] = max(loop_exe[(startBlock, endBlock)], time)
+                    else:
+                        loop_exe[(startBlock, endBlock)] = time
+
+
+        print(function_exe)
+        print(ifelse_exe)
+        print(loop_exe)
+
         return fileName
 
     def addLineNumberBeforeStatement(self, inputFileName,blockTrack,start_main):
