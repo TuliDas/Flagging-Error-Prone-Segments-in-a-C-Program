@@ -78,7 +78,7 @@ class Highlight_Executed_Statements:
         for line in l3:
             counter = counter + 1
 
-            if counter == 1:
+            if counter in range(1,4):
                 continue
 
             if(line.startswith("#") or ('<' in line) or ('>' in line)):

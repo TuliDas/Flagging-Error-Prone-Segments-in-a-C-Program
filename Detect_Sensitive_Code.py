@@ -20,18 +20,18 @@ class Detect_Sensitive_Code:
         self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
         self.highlightStatements = HighlightExecutedStatements.Highlight_Executed_Statements()
         self.highlightHeuristics = HighlightHeuristics.Highlight_Heuristics()
-
+        
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
         allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunctionName
         getTrackOfBlock,start_main = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
         justBlock = self.updateBlock(getTrackOfBlock)  # -> block start and end report
-        print(getTrackOfBlock)
         inputString = self.inputToString(processedFileName)
-        executionTime = self.addExecutionClockFuntionBlockWise(processedFileName, getTrackOfBlock,justBlock) #InputE.cpp
-        #processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
-        #processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
-        #processedFileName = self.executeProcessedSourceCode(processedFileName)
-        #self.highlightStatements.highlightExecutedStatements(processedFileName)
+        #print(getTrackOfBlock)
+        self.addExecutionClockFuntionBlockWise(processedFileName, getTrackOfBlock,justBlock) #InputE.cpp
+        processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
+        processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
+        processedFileName = self.executeProcessedSourceCode(processedFileName)
+        self.highlightStatements.highlightExecutedStatements(processedFileName)
         #self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
         print("Operation Successful")
         
@@ -45,16 +45,15 @@ class Detect_Sensitive_Code:
         f = open(fileName, "w")
 
         line = "static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;"
-        
         f.write(line)
         f.write("\n")
+        
         line = "#include <chrono>"
         f.write(line)
         f.write("\n")
         line = "long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}"
         f.write(line)
         f.write("\n")
-
         
         done = 0 
         for line in lines:
@@ -91,6 +90,7 @@ class Detect_Sensitive_Code:
         f.close()
         return fileName
 
+  
     def inputToString(self,inputFileName):
         f = open (inputFileName)
         lines = f.read().splitlines()
@@ -128,6 +128,25 @@ class Detect_Sensitive_Code:
             if st <= lineNum and lineNum <= ed:
                 return (st,ed)
         return None
+
+    def executeTimeOptimalHeuristicts(self,dict_data):
+        H = []
+        h = []
+        mx = -1
+        for i in dict_data.keys():
+            if dict_data[i] > mx:
+                mx = dict_data[i]
+        
+        for i in dict_data.keys():
+            if dict_data[i] == mx:
+                (a,b) = i 
+                H.append(a)
+                for j in range(a,b+1):
+                    h.append(j)
+
+        #print(H)
+        #print(h)
+        return H,h
 
 
     def addExecutionClockFuntionBlockWise(self, inputFileName, trackOfBlock,blockTrack):
@@ -210,17 +229,17 @@ class Detect_Sensitive_Code:
 
                 if startBlock in function_dict.keys() and function_dict[startBlock]==endBlock:
                     if (startBlock, endBlock) in function_exe:
-                        function_exe[(startBlock, endBlock)] = max(function_exe[(startBlock, endBlock)], time)
+                        function_exe[(startBlock, endBlock)] += time
                     else:
                         function_exe[(startBlock, endBlock)] = time
                 elif startBlock in mergedIfElse.keys() and mergedIfElse[startBlock]==endBlock:
                     if (startBlock, endBlock) in ifelse_exe:
-                        ifelse_exe[(startBlock, endBlock)] = max(ifelse_exe[(startBlock, endBlock)], time)
+                        ifelse_exe[(startBlock, endBlock)] += time
                     else:
                         ifelse_exe[(startBlock, endBlock)] = time
                 elif startBlock in loop_dict.keys() and loop_dict[startBlock]==endBlock:
                     if (startBlock, endBlock) in loop_exe:
-                        loop_exe[(startBlock, endBlock)] = max(loop_exe[(startBlock, endBlock)], time)
+                        loop_exe[(startBlock, endBlock)] += time
                     else:
                         loop_exe[(startBlock, endBlock)] = time
 
@@ -229,7 +248,13 @@ class Detect_Sensitive_Code:
         print(ifelse_exe)
         print(loop_exe)
 
-        return fileName
+        H1,h1 = self.executeTimeOptimalHeuristicts(ifelse_exe)
+        H2,h2 = self.executeTimeOptimalHeuristicts(loop_exe)
+        H3,h3 = self.executeTimeOptimalHeuristicts(function_exe)
+        self.highlightHeuristics.highlightingHeuristics(inputFileName,H1,h1,H2,h2,H3,h3,"executeTime.html")
+
+
+
 
     def addLineNumberBeforeStatement(self, inputFileName,blockTrack,start_main):
         f = open (inputFileName)
@@ -369,7 +394,7 @@ class Detect_Sensitive_Code:
         cmd = inputFileName
         outputFileName = "Output.txt"
 
-        subprocess.call(["g++","-o", "b", cmd]) 
+        subprocess.call(["g++", "-std=c++11", "-o", "e", cmd]) 
         subprocess.call("b.exe")
         return outputFileName 
 
@@ -612,6 +637,7 @@ class Detect_Sensitive_Code:
     
         
         # --- ifElse Heuristics --- #
+        
         if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
         else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
         elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
@@ -619,12 +645,16 @@ class Detect_Sensitive_Code:
         mergedIfElse.update(if_dict)
         mergedIfElse.update(else_dict)
         mergedIfElse.update(elseIf_dict)
+        
 
         ifelse_final = self.calculateStatementsForHeuristics(ifelse_temp)
         H1_IfElseifElse = self.getOptimalHeuristics(ifelse_final)
         H1_Sub = []
         for i in range(len(H1_IfElseifElse)):
             H1_IfElseifElse[i] -= 1
+        #print(mergedIfElse)
+        #print(H1_IfElseifElse) 
+        #print(ifelse_final)   
         
         for i in H1_IfElseifElse:
             a = i
@@ -663,8 +693,8 @@ class Detect_Sensitive_Code:
                 if name in strr[j] :
                     for k in range(j,function_dict[j]+1):
                         H3_Sub.append(k)
-
-        self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H1_Sub,H2_Loop,H2_Sub,H3_Function,H3_Sub)
+        
+        self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H1_Sub,H2_Loop,H2_Sub,H3_Function,H3_Sub,"Heuristicts.html")
         
 
 def main():

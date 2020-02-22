@@ -1,8 +1,6 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
 #include <chrono>
 long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}
-#include<chrono>
-long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 #include<stdio.h>
 #include<iostream>
 using namespace std;
@@ -38,16 +36,14 @@ int main()
 printf("line = %d\n",__LINE__);    int a = 10;
 printf("line = %d\n",__LINE__); int testAra[100000];
 printf("line = %d\n",__LINE__);    int temp = 0 ;
-printf("line = %d\n",__LINE__);    auto startTime=getTicks();
-printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    for(int i=0;i<5000;i++)
+printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    for(int i=0;i<5;i++)
     {
-printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);        for(int j=0;j<50;j++)
+printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);        for(int j=0;j<5;j++)
         {
 printf("line = %d\n",__LINE__);            temp += checkOddEven(j);
 printf("line = %d\n",__LINE__);            testAra[i] = temp ;
         }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
-    }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
-printf("line = %d\n",__LINE__);    auto endTime=getTicks();
+    }    printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
 printf("line = %d\n",__LINE__);    FuctionTerminatingBranch(2,20);
 printf("line = %d\n",__LINE__);    int z = 13;
 printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);    while(z--)
@@ -86,6 +82,5 @@ printf("line = %d\n",__LINE__);        int c = b+10;
 printf("line = %d\n",__LINE__);        int s = c+15;
 printf("line = %d\n",__LINE__);        int t = 100;
 printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);    }
-printf("line = %d\n",__LINE__);    cout<<"My Time: "<<endTime - startTime<<endl;
 printf("line = %d\n",__LINE__);    return 0;
 }

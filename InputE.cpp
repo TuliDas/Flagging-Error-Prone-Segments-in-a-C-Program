@@ -50,9 +50,9 @@ auto startTime49 = getTicks();    while(z--)
     {
         int t = 10;
     }printf("Time = %lld , ( 49 , 52 ) \n", getTicks() - startTime49);
-auto startTime53 = getTicks();    for(int i=0;i<100;i++)
+auto startTime53 = getTicks();    for(int i=0;i<3;i++)
     {
-auto startTime55 = getTicks();        for(int j=0;j<100;j++)
+auto startTime55 = getTicks();        for(int j=0;j<3;j++)
         {
              int a = checkOddEven(j);
 auto startTime58 = getTicks();            for(int k=0;k<3;k++)

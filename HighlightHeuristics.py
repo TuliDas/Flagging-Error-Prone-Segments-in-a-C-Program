@@ -46,7 +46,7 @@ class Highlight_Heuristics:
                 return curColor,burColor 
         
         
-    def highlightingHeuristics(self, inputFileName,H1,h1,H2,h2,H3,h3):
+    def highlightingHeuristics(self, inputFileName,H1,h1,H2,h2,H3,h3,outputFileName):
 
         f3 = open(inputFileName)
         l3 = f3.read().splitlines()
@@ -57,7 +57,7 @@ class Highlight_Heuristics:
 
             counter = counter + 1
 
-            if counter == 1:
+            if counter in range(1,4):
                 continue
 
             if(line.startswith("#") or ('<' in line) or ('>' in line)):
@@ -79,7 +79,7 @@ class Highlight_Heuristics:
 
     
         f3.close()
-        f = open("heuristics.html", "w")
+        f = open(outputFileName, "w")
         f.write(stringfff)
         f.close()
 
