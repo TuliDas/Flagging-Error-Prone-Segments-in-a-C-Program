@@ -66,12 +66,12 @@ printf("line = %d\n",__LINE__);        int b = 10;
 printf("line = %d\n",__LINE__);        int c = b + 1;
 printf("line = %d\n",__LINE__);        int s = b + c;
     }
-    else if (a == 20)
+    else if (a == 100)
     {
-printf("line = %d\n",__LINE__);        int b = 15;
-printf("line = %d\n",__LINE__);        int c = b++;
-printf("line = %d\n",__LINE__);        int s = c++;
-printf("line = %d\n",__LINE__);        int t = 100;
+            for(int i=0;i<=1000;i++)
+            {
+printf("line = %d\n",__LINE__);                int xx = i;
+            }
     }
     else
     {

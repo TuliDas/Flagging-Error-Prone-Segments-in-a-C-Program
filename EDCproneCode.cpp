@@ -78,12 +78,12 @@ int main()
         int c = b + 1;
         int s = b + c;
     }
-    else if (a == 20)
+    else if (a == 100)
     {
-        int b = 15;
-        int c = b++;
-        int s = c++;
-        int t = 100;
+            for(int i=0;i<=1000;i++)
+            {
+                int xx = i;
+            }
     }
     else
     {

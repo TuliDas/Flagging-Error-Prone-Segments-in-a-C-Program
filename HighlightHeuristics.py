@@ -10,18 +10,43 @@ class Highlight_Heuristics:
         print("Successful Highlighting Heuristics")
 
 
-    def getColorByRank(self, heuristics_num):
-        if heuristics_num == 1:
-            return "red"
-        if heuristics_num == 2:
-            return "orange"
-        if heuristics_num == 3:
-            return "blue"
-        
-        return "black"
-        
+    def getColorByRank(self, counter,H1,h1,H2,h2,H3,h3):
+                if counter in H1:
+                    curColor = "green"
+                    burColor = "#7bc8ff"
+                    return curColor,burColor
 
-    def highlightingHeuristics(self, inputFileName,H1,H2,H3):
+                if counter in H2:
+                    curColor = "red"
+                    burColor = "#5cffee"
+                    return curColor,burColor
+
+                if counter in H3:
+                    curColor = "blue"
+                    burColor = "#f6ff16"
+                    return curColor,burColor
+
+                if counter in h1:
+                    curColor = "green"
+                    burColor = "white"
+                    return curColor,burColor
+
+                if counter in h2:
+                    curColor = "red"
+                    burColor = "white"
+                    return curColor,burColor
+
+                if counter in h3:
+                    curColor = "blue"
+                    burColor = "white"
+                    return curColor,burColor
+                
+                curColor = "black"
+                burColor = "white"
+                return curColor,burColor 
+        
+        
+    def highlightingHeuristics(self, inputFileName,H1,h1,H2,h2,H3,h3):
 
         f3 = open(inputFileName)
         l3 = f3.read().splitlines()
@@ -41,20 +66,8 @@ class Highlight_Heuristics:
             if('freopen("Output.txt", "w+", stdout);' in line):
                 line = '{'
 
-            elif ((counter in H1) or (counter in H2) or (counter in H3)):
-                if counter in H1:
-                    curColor = "green"
-                    burColor = "#7bc8ff"
-
-                if counter in H2:
-                    curColor = "red"
-                    burColor = "#5cffee"
-
-                if counter in H3:
-                    curColor = "blue"
-                    burColor = "#f6ff16"
             else:
-                curColor = "black"
+                curColor , burColor = self.getColorByRank(counter,H1,h1,H2,h2,H3,h3)
             
 
             if curColor == "black":

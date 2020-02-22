@@ -24,9 +24,8 @@ class Detect_Sensitive_Code:
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
         allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunctionName
         getTrackOfBlock,start_main = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
-        #print(getTrackOfBlock)
-        print(start_main)
         justBlock = self.updateBlock(getTrackOfBlock)  # -> block start and end report
+        inputString = self.inputToString(processedFileName)
         processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
@@ -83,6 +82,15 @@ class Detect_Sensitive_Code:
         f.close()
         return fileName
 
+    def inputToString(self,inputFileName):
+        f = open (inputFileName)
+        lines = f.read().splitlines()
+        f.close()
+        strr = []
+        strr.append('begin')
+
+        for line in lines:
+            strr.append(line)
 
 
     def addLineNumberBeforeStatement(self, inputFileName,blockTrack,start_main):
@@ -477,18 +485,41 @@ class Detect_Sensitive_Code:
     
         
         # --- ifElse Heuristics --- #
+        if_dict = self.parenthesisBalance.IfTrackCalculation(trackOfBlock)
+        else_dict = self.parenthesisBalance.ElseTrackCalculation(trackOfBlock)
+        elseIf_dict = self.parenthesisBalance.ElseIfTrackCalculation(trackOfBlock)
+
+        mergedIfElse = dict()
+        mergedIfElse.update(if_dict)
+        mergedIfElse.update(else_dict)
+        mergedIfElse.update(elseIf_dict)
+
         ifelse_final = self.calculateStatementsForHeuristics(ifelse_temp)
         H1_IfElseifElse = self.getOptimalHeuristics(ifelse_final)
-
+        H1_Sub = []
         for i in range(len(H1_IfElseifElse)):
             H1_IfElseifElse[i] -= 1
         
+        for i in H1_IfElseifElse:
+            a = i
+            b = mergedIfElse[a] + 1
+            for j in range(a,b):
+                H1_Sub.append(j)
+        
         # ------ Loop Terminating Branch ---- #
+        loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
         loop_final = self.calculateStatementsForHeuristics(loop_temp)
         H2_Loop = self.getOptimalHeuristics(loop_final)
+        H2_Sub = []
+        for i in H2_Loop:
+            a = i
+            b = loop_dict[a] + 1
+            for j in range(a,b):
+                H2_Sub.append(j)
 
         # ------- Function Terminating Branch -----# 
         H3_Function = [] 
+        H3_Sub = []
         function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
         function_final = self.calculateStatementsForHeuristics(function_temp)
         function_final = self.getFunctionStatement(function_final)
@@ -498,7 +529,7 @@ class Detect_Sensitive_Code:
         H3_Function = self.findFunctionDefinition(fileName, function_ans , H3_Function,function_dict)
                
         
-        self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H2_Loop,H3_Function)
+        self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H1_Sub,H2_Loop,H2_Sub,H3_Function,H3_Sub)
         
 
 def main():

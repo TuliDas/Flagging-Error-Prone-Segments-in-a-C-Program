@@ -66,12 +66,12 @@ printf("line = %d\n",__LINE__);        int b = 10;
 printf("line = %d\n",__LINE__);        int c = b + 1;
 printf("line = %d\n",__LINE__);        int s = b + c;
 printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);    }
-    else if (a == 20)
+    else if (a == 100)
     {printf("ifelse_start_id %d line = %d\n", ++global_ifelse_id, __LINE__);
-printf("line = %d\n",__LINE__);        int b = 15;
-printf("line = %d\n",__LINE__);        int c = b++;
-printf("line = %d\n",__LINE__);        int s = c++;
-printf("line = %d\n",__LINE__);        int t = 100;
+printf("loop_start_id %d line = %d\n", ++global_loop_id, __LINE__);            for(int i=0;i<=1000;i++)
+            {
+printf("line = %d\n",__LINE__);                int xx = i;
+            }printf("loop_end_id %d line = %d\n", global_loop_id--, __LINE__);
 printf("ifelse_end_id %d line = %d\n", global_ifelse_id--, __LINE__);    }
     else
     {printf("ifelse_start_id %d line = %d\n", ++global_ifelse_id, __LINE__);
