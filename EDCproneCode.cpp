@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<iostream>
+
 using namespace std;
 
 int abc;
@@ -38,7 +39,7 @@ bool checkOddEven(int num)
 
 int main()
 {
-    int a = 10; int testAra[100];
+    int a = 10; int testAra[100000];
 
     int temp = 0 ;
 
@@ -49,8 +50,7 @@ int main()
             temp += checkOddEven(j);
             testAra[i] = temp ;
         }
-    }
-
+    }    
     FuctionTerminatingBranch(2,20);
 
     int z = 13;

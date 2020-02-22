@@ -1,4 +1,6 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
+#include <chrono>
+long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}
 #include<stdio.h>
 #include<iostream>
 using namespace std;
@@ -32,7 +34,7 @@ bool checkOddEven(int num)
 int main()
 { freopen("Output.txt", "w+", stdout);
     int a = 10;
- int testAra[100];
+ int testAra[100000];
     int temp = 0 ;
     for(int i=0;i<5;i++)
     {
@@ -41,7 +43,7 @@ int main()
             temp += checkOddEven(j);
             testAra[i] = temp ;
         }
-    }
+    }    
     FuctionTerminatingBranch(2,20);
     int z = 13;
     while(z--)

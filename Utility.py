@@ -5,6 +5,8 @@ class Utility:
         print("Inside Utility Constructor")
 
     def Function_Check(self, line):
+        if "long long getTicks()" in line :
+            return False
         if line.startswith("else if"):
             return False
 

@@ -25,8 +25,9 @@ class Detect_Sensitive_Code:
         allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunctionName
         getTrackOfBlock,start_main = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
         justBlock = self.updateBlock(getTrackOfBlock)  # -> block start and end report
+        print(getTrackOfBlock)
         inputString = self.inputToString(processedFileName)
-        #executionTime = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #InputE.cpp
+        executionTime = self.addExecutionClockFuntionBlockWise(processedFileName, getTrackOfBlock,justBlock) #InputE.cpp
         #processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
         #processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         #processedFileName = self.executeProcessedSourceCode(processedFileName)
@@ -47,6 +48,13 @@ class Detect_Sensitive_Code:
         
         f.write(line)
         f.write("\n")
+        line = "#include <chrono>"
+        f.write(line)
+        f.write("\n")
+        line = "long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}"
+        f.write(line)
+        f.write("\n")
+
         
         done = 0 
         for line in lines:
@@ -107,6 +115,20 @@ class Detect_Sensitive_Code:
             if st <= lineNum and lineNum <= ed:
                 return True
         return False
+    
+    def getStartingLineNumber(self, dictData, lineNum):
+        for st in dictData.keys():
+            if dictData[st] == lineNum:
+                return st
+        return None
+
+    def getBlockRange(self, funcData, lineNum):
+        for st in funcData.keys():    
+            ed = funcData[st]
+            if st <= lineNum and lineNum <= ed:
+                return (st,ed)
+        return None
+
 
     def addExecutionClockFuntionBlockWise(self, inputFileName, trackOfBlock,blockTrack):
         reader = open(inputFileName)
@@ -125,36 +147,41 @@ class Detect_Sensitive_Code:
         loop_dict = self.parenthesisBalance.LoopTrackCalculation(trackOfBlock)
 
         cnt = 0
+        trackerCnt = 0
         for line in lines:
             cnt = cnt + 1
-
-            strToWrite = ''
+            
             if 'return' in line and self.ifInsideBlock(blockTrack,cnt):
-                ss = self.utility.Statement_Get(line)
-                if self.ifInsideBlock(mergedIfElse, cnt):
-                    strToWrite = strToWrite + 'printf("ifelse_end_id %d line = %d\\n", global_ifelse_id--, __LINE__);'
-                if self.ifInsideBlock(loop_dict, cnt):
-                    strToWrite = strToWrite + 'printf("loop_end_id %d line = %d\\n", global_loop_id--, __LINE__);'
                 if self.ifInsideBlock(function_dict, cnt):
-                    strToWrite = strToWrite + 'printf("function_end_id %d line = %d\\n", global_function_id--, __LINE__);'
-                strToWrite = ss[0] + strToWrite + ss[1] 
+                    (startingPoint, endPoint) = self.getBlockRange(function_dict, cnt)
+                    line = 'printf("Time = %lld , (' +str(startingPoint)+', '+str(endPoint)+') \\n", getTicks() - startTime'+str(startingPoint)+');' + line
                 
-                writer.write(strToWrite)
+                writer.write(line)
                 writer.write('\n')
                 continue
+
             
             if (cnt - 1) in function_dict:
-                line += 'printf("function_start_id %d line = %d\\n", ++global_function_id, __LINE__);'
+                line += 'auto startTime' + str(cnt-1)+' = getTicks();'
+                trackerCnt+=1
             if self.checkIfExists(function_dict, cnt):
-                line = 'printf("function_end_id %d line = %d\\n", global_function_id--, __LINE__);' + line
+                startingPoint = self.getStartingLineNumber(function_dict, cnt)
+                line = 'printf("Time = %lld , (' +str(startingPoint)+', '+str(cnt)+') \\n", getTicks() - startTime'+str(startingPoint)+');' + line
+                trackerCnt-=1
             if (cnt - 1) in mergedIfElse:
-                line += 'printf("ifelse_start_id %d line = %d\\n", ++global_ifelse_id, __LINE__);'
+                line += 'auto startTime' + str(cnt-1)+' = getTicks();'
+                trackerCnt+=1
             if self.checkIfExists(mergedIfElse, cnt):
-                line = 'printf("ifelse_end_id %d line = %d\\n", global_ifelse_id--, __LINE__);' + line
+                startingPoint = self.getStartingLineNumber(mergedIfElse, cnt)
+                line = 'printf("Time = %lld , (' +str(startingPoint)+', '+str(cnt)+') \\n", getTicks() - startTime'+str(startingPoint)+');' + line
+                trackerCnt-=1
             if (cnt) in loop_dict:
-                line = 'printf("loop_start_id %d line = %d\\n", ++global_loop_id, __LINE__);' + line
+                line = 'auto startTime' + str(cnt)+' = getTicks();' + line
+                trackerCnt+=1
             if self.checkIfExists(loop_dict, cnt):
-                line += 'printf("loop_end_id %d line = %d\\n", global_loop_id--, __LINE__);'          
+                startingPoint = self.getStartingLineNumber(loop_dict, cnt)
+                line += 'printf("Time = %lld , (' +str(startingPoint)+', '+str(cnt)+') \\n", getTicks() - startTime'+str(startingPoint)+');'
+                trackerCnt-=1          
 
             writer.write(line)
             writer.write('\n')
