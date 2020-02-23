@@ -21,6 +21,7 @@ class Detect_Sensitive_Code:
         self.highlightStatements = HighlightExecutedStatements.Highlight_Executed_Statements()
         self.highlightHeuristics = HighlightHeuristics.Highlight_Heuristics()
         
+        
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
         allFunctionName = self.getAllFunctionName(processedFileName) #-> allFunctionName
         getTrackOfBlock,start_main = self.parenthesisBalance.TrackCalculation(processedFileName) #Function, Loop, If track
@@ -32,7 +33,7 @@ class Detect_Sensitive_Code:
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         self.highlightStatements.highlightExecutedStatements(processedFileName)
-        #self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
+        self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
         print("Operation Successful")
         
 
@@ -90,7 +91,6 @@ class Detect_Sensitive_Code:
         f.close()
         return fileName
 
-  
     def inputToString(self,inputFileName):
         f = open (inputFileName)
         lines = f.read().splitlines()
@@ -244,15 +244,14 @@ class Detect_Sensitive_Code:
                         loop_exe[(startBlock, endBlock)] = time
 
 
-        print(function_exe)
-        print(ifelse_exe)
-        print(loop_exe)
+        #print(function_exe)
+        #print(ifelse_exe)
+        #print(loop_exe)
 
         H1,h1 = self.executeTimeOptimalHeuristicts(ifelse_exe)
         H2,h2 = self.executeTimeOptimalHeuristicts(loop_exe)
         H3,h3 = self.executeTimeOptimalHeuristicts(function_exe)
         self.highlightHeuristics.highlightingHeuristics(inputFileName,H1,h1,H2,h2,H3,h3,"executeTime.html")
-
 
 
 
@@ -394,7 +393,7 @@ class Detect_Sensitive_Code:
         cmd = inputFileName
         outputFileName = "Output.txt"
 
-        subprocess.call(["g++", "-std=c++11", "-o", "e", cmd]) 
+        subprocess.call(["g++","-std=c++11", "-o", "b", cmd]) 
         subprocess.call("b.exe")
         return outputFileName 
 
