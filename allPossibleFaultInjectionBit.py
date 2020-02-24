@@ -24,25 +24,55 @@ class Faulty_Binary_Bit:
         
         #ans = pow(2,ans)
         return ans
-    
 
-    def blockWisePossibleBit(self,total,B1,B2):
-        bit1 = {}
-        bit2 = {}
-        bit3 = {}
+    def calculatePercentage(self,B,total):
+        
+        bit = {}
         bitsPerStatements = 64
 
-        for i in B1:
-            temp = B1[i] * bitsPerStatements
-            #bit1[i] = ( pow(2,temp) / total )
-            bit1[i] =  ( temp / total ) * 100 
+        for i in B:
+            temp = B[i] * bitsPerStatements
+            #bit[i] = ( pow(2,temp) / total )
+            bit[i] =  ( temp / total ) * 100 
+        
 
-        for i in B2:
-            temp = B2[i] * bitsPerStatements
-            #bit1[i] = ( pow(2,temp) / total )
-            bit2[i] =  ( temp / total ) * 100 
 
-        #print(bit2)
+        return bit
+    def calculateHighestPercentageBlock(self,B):
+        mx = -1
+        temp = {}
+        for i in B:
+            if B[i] > mx:
+                mx = B[i]
+        
+        for i in B:
+            if B[i] == mx:
+                temp[i] = B[i]
+        
+        return temp
+          
+    
+
+    def blockWisePossibleBit(self,total,B1,B2,B3,strr):
+         
+        bit_ifElse = self.calculatePercentage(B1,total)
+        bit_Loop = self.calculatePercentage(B2,total)
+        bit_Function = self.calculatePercentage(B3,total)
+
+        
+        self.ShowTheTableOfPercentage(bit_ifElse,bit_Loop,bit_Function)
+        
+
+    def ShowTheTableOfPercentage(self,b1,b2,b3):
+        Highest_ifElse = self.calculateHighestPercentageBlock(b1)
+        Highest_Loop = self.calculateHighestPercentageBlock(b2)
+        Highest_Function = self.calculateHighestPercentageBlock(b3)
+        
+        
+
+
+    
+      
         
 
 
