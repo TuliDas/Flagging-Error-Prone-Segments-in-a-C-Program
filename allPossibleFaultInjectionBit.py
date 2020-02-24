@@ -58,12 +58,12 @@ class Faulty_Binary_Bit:
           
     def tableMaking(self,B,title,clr,blr,H):
 
-        stringff = '<table border="2" style="width:70%">'
-        stringff+= '<caption style="font-family:italic;font-size:20;font-weight:bold;color:#2b20a1 ">' + title + '</caption>'
+        stringff = '<table style="width:70%; border: 1px solid black;border-collapse: collapse;">'
+        stringff+= '<caption style="font:italic;font-size:20;font-weight:bold;color:#2b20a1 ">' + title + '</caption>'
         
         stringff += '<tr>'
-        stringff += '<th> Block </th>'
-        stringff += '<th> Bit Percentage </th>'
+        stringff += '<th style = "font-size:18;" > Block </th>'
+        stringff += '<th style = "font-size:18;"> Bit Percentage </th>'
         stringff += '</tr>'
 
         for line in B:
@@ -75,8 +75,8 @@ class Faulty_Binary_Bit:
                 burColor = '#cfd2d2'
             
             stringff += '<tr>'
-            stringff += '<td style="font-family:verdana;font-size:16;font-weight:bold;background-color:'+burColor+';color:'+curColor+'" >' + line + '</td>'
-            stringff += '<td style="font-family:verdana;font-size:16;font-weight:bold;background-color:'+burColor+';color:'+curColor+'">' + str(B[line]) + ' %</td>'
+            stringff += '<td style="border: 1px solid black;font-family:verdana;font-size:16;font-weight:bold;background-color:'+burColor+';color:'+curColor+'" >' + line + '</td>'
+            stringff += '<td style="text-align: center;border: 1px solid black;font-family:verdana;font-size:16;font-weight:bold;background-color:'+burColor+';color:'+curColor+'">' + str(B[line]) + ' %</td>'
             stringff += '</tr>'
             
         stringff += '</table>'
@@ -100,24 +100,16 @@ class Faulty_Binary_Bit:
         Highest_ifElse = self.calculateHighestPercentageBlock(b1)
         Highest_Loop = self.calculateHighestPercentageBlock(b2)
         Highest_Function = self.calculateHighestPercentageBlock(b3)
-
+        
+        
         stringff = "<html><body><code>\n"
-        stringff += self.tableMaking(b1,'If-ElseIf-Else Operations',"green","#7bc8ff",Highest_ifElse)
+        stringff += self.tableMaking(b1,'If-ElseIf-Else Operations',"#9d0235","#7bc8ff",Highest_ifElse)
+        #stringff +="\n"
         stringff += self.tableMaking(b2,'Loop Operations',"red","#5cffee",Highest_Loop)
-        stringff += self.tableMaking(b3,'Function Operation',"blue","#f6ff16",Highest_Function)
+        #stringff +="\n"
+        stringff += self.tableMaking(b3,'Function Operation',"blue","#f4fc76",Highest_Function)
         stringff += "</code></body></html>\n"
 
         f = open("report.html", "w")
         f.write(stringff)
         f.close()
-
-        
-        
-
-
-    
-      
-        
-
-
-

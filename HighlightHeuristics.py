@@ -12,7 +12,7 @@ class Highlight_Heuristics:
 
     def getColorByRank(self, counter,H1,h1,H2,h2,H3,h3):
                 if counter in H1:
-                    curColor = "green"
+                    curColor = "#9d0235"
                     burColor = "#7bc8ff"
                     return curColor,burColor
 
@@ -27,7 +27,7 @@ class Highlight_Heuristics:
                     return curColor,burColor
 
                 if counter in h1:
-                    curColor = "green"
+                    curColor = "#9d0235"
                     burColor = "white"
                     return curColor,burColor
 
