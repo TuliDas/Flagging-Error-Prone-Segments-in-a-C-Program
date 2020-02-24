@@ -1,0 +1,34 @@
+<html><body><code>
+<p style="font-family:verdana;font-weight:bold;color:black">#include< bits/stdc++.h> </p>
+<p style="font-family:verdana;font-weight:bold;color:black">using namespace std;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">#define ll long long</p>
+<p style="font-family:verdana;font-weight:bold;color:black">int fun2(int d,int e,int f)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">{</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    int a = d + e + f ;   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    return a ;   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">}</p>
+<p style="font-family:verdana;font-weight:bold;color:black">int fun(int x,int y,int z)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">{</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    int a;   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    int b;   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    int c;   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    int ans = fun2(x,y,z);   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:red">    return ans;   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">}</p>
+<p style="font-family:verdana;font-weight:bold;color:black">void fun3()</p>
+<p style="font-family:verdana;font-weight:bold;color:black">{</p>
+<p style="font-family:verdana;font-weight:bold;color:blue">    int a;   //executed 2 times</p>
+<p style="font-family:verdana;font-weight:bold;color:blue">    int b;   //executed 2 times</p>
+<p style="font-family:verdana;font-weight:bold;color:blue">    int c;   //executed 2 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">}</p>
+<p style="font-family:verdana;font-weight:bold;color:black">int main()</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    int n = 10;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=1;i< =5;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
+<p style="font-family:verdana;font-weight:bold;color:red">        int z = fun(i,i,i);   //(MOST SENSITIVE portion), executed 5 times</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    fun3();</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    fun3();</p>
+<p style="font-family:verdana;font-weight:bold;color:#00d600">    return 0;</p>
+<p style="font-family:verdana;font-weight:bold;color:black">}</p>
+</code></body></html>

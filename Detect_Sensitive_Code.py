@@ -6,13 +6,15 @@ import Utility
 import ParenthesisBalance
 import HighlightExecutedStatements
 import HighlightHeuristics
+import allPossibleFaultInjectionBit
 
 class Detect_Sensitive_Code:
     
     utility = None
     parenthesisBalance = None
     highlightStatements = None
-    highlightHeuristics = None 
+    highlightHeuristics = None
+    faultyBinaryBit = None  
 
     def __init__(self, inputFileName):
         
@@ -20,6 +22,7 @@ class Detect_Sensitive_Code:
         self.parenthesisBalance = ParenthesisBalance.Parenthesis_Balance()
         self.highlightStatements = HighlightExecutedStatements.Highlight_Executed_Statements()
         self.highlightHeuristics = HighlightHeuristics.Highlight_Heuristics()
+        self.faultyBinaryBit = allPossibleFaultInjectionBit.Faulty_Binary_Bit()
         
         
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
@@ -33,7 +36,9 @@ class Detect_Sensitive_Code:
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
         self.highlightStatements.highlightExecutedStatements(processedFileName)
-        self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
+        b1,b2 = self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
+        fullBinaryBit = self.faultyBinaryBit.wholePossibleBinaryBit(processedFileName)
+        self.faultyBinaryBit.blockWisePossibleBit(fullBinaryBit,b1,b2)
         print("Operation Successful")
         
 
@@ -583,6 +588,58 @@ class Detect_Sensitive_Code:
         #print(ans)
         return ans,temp
 
+    def updateFunctionName(self,dic,info,s):
+        #print(dic)
+        #print(info)
+        temp = {}
+
+        for i in info:
+            f = (i[1])
+            line_no = i[0]
+            for i in dic.keys():
+                if f in s[i]:
+                    ll=[]
+                    if f in temp.keys():
+                        for x in temp[f]:
+                            if x in ll:
+                                continue
+                            ll.append(x)
+                    if line_no not in ll:
+                        ll.append(line_no)
+                    
+                    temp[f] = ll
+
+        #print(temp)
+
+        return temp
+
+
+    def gettingH3_h3(self,dic,info,ins,s):
+
+        mx = -1
+        for i in info:
+            if(i[1]>mx):
+                mx = i[1]
+        H3 = []
+        h3 = []
+        for i in info:
+            if i[1] == mx:
+                H3.append(i[0])
+
+        for i in H3:
+            a = i
+            b = dic[i] + 1
+            for j in range(a,b):
+                if s[j] == '{' or s[j] == '}':
+                    h3.append(j)
+                    continue
+                if j in ins:
+                    h3.append(j)        
+        
+        print(H3)
+        print(h3)
+        return H3,h3
+
 
     def getAllHeuristicsAndHighlight(self, inputFileName , trackOfBlock, fn_name,strr):
 
@@ -593,6 +650,18 @@ class Detect_Sensitive_Code:
         loop_temp = []
         ifelse_temp = []
         function_temp = []
+        
+        ins = []
+        for line in l2:
+            word = line.split()
+            if word[0]=='line':
+                ins.append(int(word[2]))
+        
+        #print('ins -> ')
+        #print(ins)
+
+
+        
 
         for line in l2:
             word = line.split()
@@ -653,7 +722,17 @@ class Detect_Sensitive_Code:
             H1_IfElseifElse[i] -= 1
         #print(mergedIfElse)
         #print(H1_IfElseifElse) 
-        #print(ifelse_final)   
+        #print(ifelse_final) 
+        
+        
+        ifElseBit = {}
+        for i in ifelse_final:
+            if i[0] == -1 :
+                continue
+            a = i[1] - 1
+            b = mergedIfElse[a]
+            ifElseBit[(a,b)] = ifelse_final[i]
+
         
         for i in H1_IfElseifElse:
             a = i
@@ -672,6 +751,15 @@ class Detect_Sensitive_Code:
             for j in range(a,b):
                 H2_Sub.append(j)
 
+        loopBit = {}
+        for i in loop_final:
+            if i[0] != 1 :
+                continue
+            a = i[1]
+            b = loop_dict[a]
+            loopBit[(a,b)] = loop_final[i]   
+        #print(loopBit)     
+
 
         # ------- Function Terminating Branch -----# 
         H3_Function = [] 
@@ -679,11 +767,18 @@ class Detect_Sensitive_Code:
         function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
         function_final = self.calculateStatementsForHeuristics(function_temp)
         function_final = self.getFunctionStatement(function_final)
-        function_level_cnt = self.calculateFunctioncallLevel( fn_name , loop_temp)
-        function_level_cnt = self.discardBuiltInFunction(function_level_cnt,function_dict)
-        function_ans , H3_Function = self.findResultantFunction(function_level_cnt)
-        H3_Function = self.findFunctionDefinition(fileName, function_ans , H3_Function,function_dict)
+        fn_name = self.updateFunctionName(function_dict,fn_name,strr)
+        #function_level_cnt = self.calculateFunctioncallLevel( fn_name , loop_temp)
+        #function_level_cnt = self.discardBuiltInFunction(function_level_cnt,function_dict)
+        #function_ans , H3_Function = self.findResultantFunction(function_level_cnt)
+        #H3_Function = self.findFunctionDefinition(fileName, function_ans , H3_Function,function_dict)
         
+        print(function_dict)
+        print(function_final)
+        
+        H3_Function , H3_Sub = self.gettingH3_h3(function_dict,function_final,ins,strr)
+
+        '''
         for i in H3_Function:
             if strr[i].startswith('return'):
                 continue
@@ -692,12 +787,12 @@ class Detect_Sensitive_Code:
                 if name in strr[j] :
                     for k in range(j,function_dict[j]+1):
                         H3_Sub.append(k)
-        
+        '''
         self.highlightHeuristics.highlightingHeuristics(fileName,H1_IfElseifElse,H1_Sub,H2_Loop,H2_Sub,H3_Function,H3_Sub,"Heuristicts.html")
-        
+        return ifElseBit,loopBit
 
 def main():
-    obj = Detect_Sensitive_Code("EDCproneCode.cpp")
+    obj = Detect_Sensitive_Code("EDCproneCode2.cpp")
 
 if __name__ == '__main__':
     main()

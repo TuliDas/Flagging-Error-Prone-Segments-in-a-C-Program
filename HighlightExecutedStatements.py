@@ -111,6 +111,6 @@ class Highlight_Executed_Statements:
 
         f2.close()
         f3.close()
-        f = open("report.html", "w")
+        f = open("ExecutedStatements.html", "w")
         f.write(stringfff)
         f.close()
