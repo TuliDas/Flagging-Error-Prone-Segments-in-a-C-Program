@@ -787,16 +787,10 @@ class Detect_Sensitive_Code:
         for i in function_final:
             a = i[0]
             b = function_dict[a]
+            if 'main()' in strr[a]:
+                continue
             funBit[(a,b)] = i[1] 
-        '''
-        print(function_dict)
-        for i in function_dict.keys():
-            print(strr[i])
-            a = self.utility.Function_DeclarationName(strr[i])
-        #print(fn_name)
-        #print(H3_Function)
-        #print(H3_Sub)
-        '''
+
         '''
         #function_level_cnt = self.calculateFunctioncallLevel( fn_name , loop_temp)
         #function_level_cnt = self.discardBuiltInFunction(function_level_cnt,function_dict)
