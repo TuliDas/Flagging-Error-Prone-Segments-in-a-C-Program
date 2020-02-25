@@ -7,6 +7,7 @@ import ParenthesisBalance
 import HighlightExecutedStatements
 import HighlightHeuristics
 import allPossibleFaultInjectionBit
+import RatioWithRespectToExecutionTime
 
 class Detect_Sensitive_Code:
     
@@ -15,6 +16,7 @@ class Detect_Sensitive_Code:
     highlightStatements = None
     highlightHeuristics = None
     faultyBinaryBit = None  
+    ratioExecutionTime = None 
 
     def __init__(self, inputFileName):
         
@@ -23,6 +25,7 @@ class Detect_Sensitive_Code:
         self.highlightStatements = HighlightExecutedStatements.Highlight_Executed_Statements()
         self.highlightHeuristics = HighlightHeuristics.Highlight_Heuristics()
         self.faultyBinaryBit = allPossibleFaultInjectionBit.Faulty_Binary_Bit()
+        self.ratioExecutionTime = RatioWithRespectToExecutionTime.Ratio_Execution_Time()
         
         
         processedFileName = self.removeEmptyLines(inputFileName) # -> InputA.cpp
@@ -31,11 +34,12 @@ class Detect_Sensitive_Code:
         justBlock = self.updateBlock(getTrackOfBlock)  # -> block start and end report
         inputString = self.inputToString(processedFileName)
         #print(getTrackOfBlock)
-        self.addExecutionClockFuntionBlockWise(processedFileName, getTrackOfBlock,justBlock) #InputE.cpp
+        e1,e2,e3,total_time = self.addExecutionClockFuntionBlockWise(processedFileName, getTrackOfBlock,justBlock,inputString,allFunctionName) #InputE.cpp
+        self.ratioExecutionTime.blockWiseExecutionTimePercentage(total_time,e1,e2,e3,inputString)
         processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
-        #self.highlightStatements.highlightExecutedStatements(processedFileName)
+        self.highlightStatements.highlightExecutedStatements(processedFileName)
         b1,b2,b3 = self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
         fullBinaryBit = self.faultyBinaryBit.wholePossibleBinaryBit(processedFileName)
         self.faultyBinaryBit.blockWisePossibleBit(fullBinaryBit,b1,b2,b3,inputString)
@@ -155,7 +159,7 @@ class Detect_Sensitive_Code:
         return H,h
 
 
-    def addExecutionClockFuntionBlockWise(self, inputFileName, trackOfBlock,blockTrack):
+    def addExecutionClockFuntionBlockWise(self, inputFileName, trackOfBlock,blockTrack,strr,fn_name):
         reader = open(inputFileName)
         fileName = "InputE.cpp"
         writer = open(fileName, "w")
@@ -249,16 +253,36 @@ class Detect_Sensitive_Code:
                     else:
                         loop_exe[(startBlock, endBlock)] = time
 
+    
+        total_execution_time = 0
+        for i in function_exe.keys():
+            a = i[0]
+            if 'main()' in strr[a]:
+                total_execution_time = function_exe[i]
+                del function_exe[i]
+                break
+        
 
-        #print(function_exe)
-        #print(ifelse_exe)
-        #print(loop_exe)
 
         H1,h1 = self.executeTimeOptimalHeuristicts(ifelse_exe)
         H2,h2 = self.executeTimeOptimalHeuristicts(loop_exe)
         H3,h3 = self.executeTimeOptimalHeuristicts(function_exe)
-        self.highlightHeuristics.highlightingHeuristics(inputFileName,H1,h1,H2,h2,H3,h3,"executeTime.html")
 
+        fn_name = self.updateFunctionName(function_dict,fn_name,strr)
+        #print(fn_name)
+
+        temp = []
+        #print(fn)
+        for i in H3:
+            for j in fn_name.keys():
+                if j == self.utility.Function_DeclarationName(strr[i]):
+                    for x in fn_name[j]:
+                        temp.append(x)
+        for i in temp:
+            H3.append(i)
+        
+        self.highlightHeuristics.highlightingHeuristics(inputFileName,H1,h1,H2,h2,H3,h3,"executeTime.html")
+        return ifelse_exe,loop_exe,function_exe,total_execution_time
 
 
     def addLineNumberBeforeStatement(self, inputFileName,blockTrack,start_main):
@@ -324,7 +348,6 @@ class Detect_Sensitive_Code:
 
         f.close()
         return fileName
-
 
 
     def updateBlock(self,info):
@@ -402,7 +425,6 @@ class Detect_Sensitive_Code:
         subprocess.call(["g++","-std=c++11", "-o", "b", cmd]) 
         subprocess.call("b.exe")
         return outputFileName 
-
 
     def calculateStatementsForHeuristics(self, instruction_set):
         instruction_set.append([-1, -1])
@@ -639,7 +661,7 @@ class Detect_Sensitive_Code:
                     h3.append(j)        
         
         temp = []
-        print(fn)
+        #print(fn)
         for i in H3:
             for j in fn.keys():
                 if j == self.utility.Function_DeclarationName(s[i]):

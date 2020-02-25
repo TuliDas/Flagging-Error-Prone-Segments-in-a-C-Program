@@ -85,8 +85,6 @@ class Faulty_Binary_Bit:
 
     def blockWisePossibleBit(self,total,B1,B2,B3,strr):
 
-
-
         bit_ifElse = self.calculatePercentage(B1,total,strr)
         bit_Loop = self.calculatePercentage(B2,total,strr)
         bit_Function = self.calculatePercentage(B3,total,strr)
@@ -103,11 +101,12 @@ class Faulty_Binary_Bit:
         
         
         stringff = "<html><body><code>\n"
-        stringff += self.tableMaking(b1,'If-ElseIf-Else Operations',"#9d0235","#7bc8ff",Highest_ifElse)
-        #stringff +="\n"
-        stringff += self.tableMaking(b2,'Loop Operations',"red","#5cffee",Highest_Loop)
-        #stringff +="\n"
-        stringff += self.tableMaking(b3,'Function Operation',"blue","#f4fc76",Highest_Function)
+        if b1:
+            stringff += self.tableMaking(b1,'If-ElseIf-Else Operations',"#9d0235","#7bc8ff",Highest_ifElse)
+        if b2:
+            stringff += self.tableMaking(b2,'Loop Operations',"red","#5cffee",Highest_Loop)
+        if b3:
+            stringff += self.tableMaking(b3,'Function Operation',"blue","#f4fc76",Highest_Function)
         stringff += "</code></body></html>\n"
 
         f = open("report.html", "w")
