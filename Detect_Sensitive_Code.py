@@ -35,7 +35,7 @@ class Detect_Sensitive_Code:
         processedFileName = self.addLineNumberBeforeStatement(processedFileName,justBlock,start_main) # -> InputB.cpp
         processedFileName = self.addBlockwiseLineNumber(processedFileName, getTrackOfBlock,justBlock) #-> inputC.cpp
         processedFileName = self.executeProcessedSourceCode(processedFileName)
-        self.highlightStatements.highlightExecutedStatements(processedFileName)
+        #self.highlightStatements.highlightExecutedStatements(processedFileName)
         b1,b2,b3 = self.getAllHeuristicsAndHighlight(processedFileName , getTrackOfBlock, allFunctionName, inputString)
         fullBinaryBit = self.faultyBinaryBit.wholePossibleBinaryBit(processedFileName)
         self.faultyBinaryBit.blockWisePossibleBit(fullBinaryBit,b1,b2,b3,inputString)
@@ -76,7 +76,8 @@ class Detect_Sensitive_Code:
 
             elif(done == 1):
                 done+=1
-                f.write(line + ' freopen("Output.txt", "w+", stdout);')
+                fff = 'freopen("Output.txt", "w+", stdout);'
+                f.write(line + ' ' + fff)
                 f.write('\n')
 
             else:
@@ -617,6 +618,8 @@ class Detect_Sensitive_Code:
 
         mx = -1
         for i in info:
+            if( 'main()' in s[i[0]]):
+                continue
             if(i[1]>mx):
                 mx = i[1]
         H3 = []
@@ -636,10 +639,10 @@ class Detect_Sensitive_Code:
                     h3.append(j)        
         
         temp = []
-
+        print(fn)
         for i in H3:
             for j in fn.keys():
-                if j in s[i]:
+                if j == self.utility.Function_DeclarationName(s[i]):
                     for x in fn[j]:
                         temp.append(x)
                  
@@ -775,6 +778,7 @@ class Detect_Sensitive_Code:
         H3_Sub = []
         function_dict = self.parenthesisBalance.FunctionTrackCalculation(trackOfBlock)
         function_final = self.calculateStatementsForHeuristics(function_temp)
+        #print(fn_name)
         function_final = self.getFunctionStatement(function_final)
         fn_name = self.updateFunctionName(function_dict,fn_name,strr)
         H3_Function , H3_Sub = self.gettingH3_h3(function_dict,function_final,ins,strr,fn_name)
@@ -784,8 +788,15 @@ class Detect_Sensitive_Code:
             a = i[0]
             b = function_dict[a]
             funBit[(a,b)] = i[1] 
-        
-        
+        '''
+        print(function_dict)
+        for i in function_dict.keys():
+            print(strr[i])
+            a = self.utility.Function_DeclarationName(strr[i])
+        #print(fn_name)
+        #print(H3_Function)
+        #print(H3_Sub)
+        '''
         '''
         #function_level_cnt = self.calculateFunctioncallLevel( fn_name , loop_temp)
         #function_level_cnt = self.discardBuiltInFunction(function_level_cnt,function_dict)

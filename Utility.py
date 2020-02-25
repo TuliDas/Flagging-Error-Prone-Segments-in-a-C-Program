@@ -14,6 +14,23 @@ class Utility:
             return False
         return True
 
+    def Function_DeclarationName(self,line):
+        line = line.strip()
+        done = 0
+        ret = ""
+
+        for c in line:
+            if (c == '(') or (done == 1 and c==' '):
+                break
+            if( c==' '):
+                done = 1
+                continue
+            if done == 1 :
+                ret = ret + c
+        
+        #print(ret)
+        return ret.strip()
+
     def Function_CallName(self,line):
         if re.search("[\w]+[\s]*[(][^)]*[)];", line) == None:
             return 'null'
@@ -37,6 +54,8 @@ class Utility:
         
     def Statement_Check(self, line):
         if (  ("{" in line) or ("}" in line) ):
+            return False
+        if line == 'freopen("Output.txt", "w+", stdout);':
             return False
         if re.search("[^;]+;", line) == None:
             return False

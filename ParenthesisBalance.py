@@ -35,7 +35,7 @@ class Parenthesis_Balance:
                 continue
             
             if(test == 1):
-                if(line=="{"):
+                if(line.startswith("{")):
                     stack.append(no)
                     continue
 
@@ -52,7 +52,6 @@ class Parenthesis_Balance:
                     else:
                         test = 0
                         stack.clear()
-
         return track_dict,main_line_no
 
     def IfTrackCalculation(self,TrackOfBlock):

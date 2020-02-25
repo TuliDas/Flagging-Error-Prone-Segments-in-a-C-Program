@@ -2,19 +2,24 @@ static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
 #include <chrono>
 long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}
 #include<stdio.h>
+void fun()
+{
+    int i = 0;
+    int b =10;
+    int a = b + 1 ;
+}
+void fun2()
+{
+    int i = 0;
+    int b =10;
+    int a = b + 1 ;
+    i = 0;
+     b =10;
+    a = b + 1 ;
+}
 int main()
 { freopen("Output.txt", "w+", stdout);
-    int i,j,k;
-    for(i=0; i<1000000; i++)
-    {
-        k = i + i ;
-    }
-    for(i=0; i<100000; i++)
-    {
-        for(j=0; j<10; j++)
-        {
-            k = i + j ;
-        }
-    }
+    fun();
+    fun2();
     return 0;
 }
