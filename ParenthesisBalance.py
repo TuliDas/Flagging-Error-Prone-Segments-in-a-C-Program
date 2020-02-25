@@ -9,10 +9,8 @@ class Parenthesis_Balance:
 
     def TrackCalculation(self,inputFileName):
         f = open (inputFileName)
-        #f = open ('pythonTest.txt')
         lines = f.read().splitlines()
         f.close()
-        
         
         track_dict = {}
         test = 0
@@ -27,8 +25,7 @@ class Parenthesis_Balance:
             if (line == 'int main()'):
                 main_line_no = no 
             strr.append(line)
-
-            
+   
             if (self.utility.Loop_Check(line) or 
             self.utility.Function_Check(line) or
             self.utility.If_Check(line) or
@@ -54,11 +51,8 @@ class Parenthesis_Balance:
                         continue
                     else:
                         test = 0
-                        #print(stack)
                         stack.clear()
 
-        
-        #print(track_dict)
         return track_dict,main_line_no
 
     def IfTrackCalculation(self,TrackOfBlock):

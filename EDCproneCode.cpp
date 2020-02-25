@@ -1,6 +1,4 @@
 #include<stdio.h>
-#include<iostream>
-
 
 int abc;
 int ttt;
@@ -14,18 +12,18 @@ void FuctionTerminatingBranch(int s,int e)
 
     int sum = 0 ;
     int ara[100];
-    for(int i=s;i<=e;i++)
+    int i;
+    for(i=s;i<=e;i++)
     {
         ara[i] = s ;
     }
-    for(int i=s;i<=e;i++)
+    for(i=s;i<=e;i++)
     {
         printf("%d\n",ara[i]);
     }
-
 }
 
-bool checkOddEven(int num)
+int checkOddEven(int num)
 {
     if(num%2==0)
     {
@@ -34,22 +32,21 @@ bool checkOddEven(int num)
     return 1;
 }
 
-
-
 int main()
 {
-    int a = 10; int testAra[100000];
+    int a = 10;
+    int testAra[1000];
 
     int temp = 0 ;
-
-    for(int i=0;i<5;i++)
+    int i,j,k;
+    for(i=0;i<5;i++)
     {
-        for(int j=0;j<5;j++)
+        for(j=0;j<5;j++)
         {
             temp += checkOddEven(j);
             testAra[i] = temp ;
         }
-    }    
+    }
     FuctionTerminatingBranch(2,20);
 
     int z = 13;
@@ -58,14 +55,14 @@ int main()
         int t = 10;
     }
 
-    for(int i=0;i<3;i++)
+    for(i=0;i<3;i++)
     {
-        for(int j=0;j<3;j++)
+        for(j=0;j<3;j++)
         {
              int a = checkOddEven(j);
             for(int k=0;k<3;k++)
             {
-                
+
                 printf("%d %d %d\n",i,j,k);
             }
         }
@@ -77,19 +74,13 @@ int main()
         int c = b + 1;
         int s = b + c;
     }
-    else if (a == 100)
+
+    else
     {
             for(int i=0;i<=1000;i++)
             {
                 int xx = i;
             }
-    }
-    else
-    {
-        int b = 15;
-        int c = b+10;
-        int s = c+15;
-        int t = 100;
     }
     return 0;
 }

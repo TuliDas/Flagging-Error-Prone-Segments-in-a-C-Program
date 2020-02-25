@@ -98,11 +98,11 @@ class Highlight_Executed_Statements:
                     curColor = "black"
                 
                 if curColor =="red":    
-                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //(MOST SENSITIVE portion), executed ' + str(cc) + ' times' + '</p>\n'
+                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '</p>\n'
                 elif cc == 1:
                     stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '</p>\n'
                 else:
-                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '   //executed ' + str(cc) + ' times' + '</p>\n'    
+                    stringfff += '<p style="font-family:verdana;font-weight:bold;color:'+curColor+'">' + line + '</p>\n'    
 
             else:
                 stringfff += '<p style="font-family:verdana;font-weight:bold;color:black">' + line + '</p>\n'

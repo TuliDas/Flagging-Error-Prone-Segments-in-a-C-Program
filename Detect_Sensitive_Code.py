@@ -804,7 +804,7 @@ class Detect_Sensitive_Code:
         return ifElseBit,loopBit,funBit
 
 def main():
-    obj = Detect_Sensitive_Code("EDCproneCode.cpp")
+    obj = Detect_Sensitive_Code("EDCproneCode2.cpp")
 
 if __name__ == '__main__':
     main()

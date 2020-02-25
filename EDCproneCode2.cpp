@@ -1,38 +1,20 @@
-#include<bits/stdc++.h>
-using namespace std;
-#define ll long long
-
-int fun2(int d,int e,int f)
-{
-    int a = d + e + f ;
-    return a ;
-}
-
-int fun(int x,int y,int z)
-{
-    int a;
-    int b;
-    int c;
-    int ans = fun2(x,y,z);
-    return ans;
-}
-
-void fun3()
-{
-    int a;
-    int b;
-    int c;
-}
+#include<stdio.h>
 
 int main()
 {
-    int n = 10;
-    for(int i=1;i<=5;i++)
+    int i,j,k;
+    for(i=0; i<1000000; i++)
     {
-        int z = fun(i,i,i);
+        k = i + i ;
+    }
+    for(i=0; i<100000; i++)
+    {
+        for(j=0; j<10; j++)
+        {
+            k = i + j ;
+        }
     }
 
-    fun3();
-    fun3();
     return 0;
 }
+

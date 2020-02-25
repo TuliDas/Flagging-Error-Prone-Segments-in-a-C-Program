@@ -1,84 +1,19 @@
 <html><body><code>
 <p style="font-family:verdana;font-weight:bold;color:black">#include< stdio.h> </p>
-<p style="font-family:verdana;font-weight:bold;color:black">#include< iostream> </p>
-<p style="font-family:verdana;font-weight:bold;color:black">int abc;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">int ttt;</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:#f6ff16;color:blue">void FuctionTerminatingBranch(int s,int e)</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">{</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    if(s< 0 || e> =100)</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        return;</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    }</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    int sum = 0 ;</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    int ara[100];</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=s;i< =e;i++)</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    {</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">        ara[i] = s ;</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=s;i< =e;i++)</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    {</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">        printf("%d\n",ara[i]);</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">    }</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:blue">}</p>
-<p style="font-family:verdana;font-weight:bold;color:black">bool checkOddEven(int num)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">{</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:#7bc8ff;color:#9d0235">    if(num%2==0)</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:#9d0235">    {</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:#9d0235">        return 0;</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:#9d0235">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    return 1;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">}</p>
 <p style="font-family:verdana;font-weight:bold;color:black">int main()</p>
 <p style="font-family:verdana;font-weight:bold;color:black">{</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    int a = 10;</p>
-<p style="font-family:verdana;font-weight:bold;color:black"> int testAra[100000];</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    int temp = 0 ;</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:#5cffee;color:red">    for(int i=0;i< 5;i++)</p>
+<p style="font-family:verdana;font-weight:bold;color:black">    int i,j,k;</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:#5cffee;color:red">    for(i=0; i< 1000000; i++)</p>
 <p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">    {</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">        for(int j=0;j< 5;j++)</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">        k = i + i ;</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">    }</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:#5cffee;color:red">    for(i=0; i< 100000; i++)</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">    {</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">        for(j=0; j< 10; j++)</p>
 <p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">        {</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">            temp += checkOddEven(j);</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">            testAra[i] = temp ;</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">            k = i + j ;</p>
 <p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">        }</p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">    }    </p>
-<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:#f6ff16;color:blue">    FuctionTerminatingBranch(2,20);</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    int z = 13;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    while(z--)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int t = 10;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    for(int i=0;i< 3;i++)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        for(int j=0;j< 3;j++)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">             int a = checkOddEven(j);</p>
-<p style="font-family:verdana;font-weight:bold;color:black">            for(int k=0;k< 3;k++)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">            {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">                </p>
-<p style="font-family:verdana;font-weight:bold;color:black">                printf("%d %d %d\n",i,j,k);</p>
-<p style="font-family:verdana;font-weight:bold;color:black">            }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    if(a == 10)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int b = 10;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int c = b + 1;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int s = b + c;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    else if (a == 100)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">            for(int i=0;i< =1000;i++)</p>
-<p style="font-family:verdana;font-weight:bold;color:black">            {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">                int xx = i;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">            }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    else</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    {</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int b = 15;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int c = b+10;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int s = c+15;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">        int t = 100;</p>
-<p style="font-family:verdana;font-weight:bold;color:black">    }</p>
+<p style="font-family:verdana;font-size:20;font-weight:bold;background-color:white;color:red">    }</p>
 <p style="font-family:verdana;font-weight:bold;color:black">    return 0;</p>
 <p style="font-family:verdana;font-weight:bold;color:black">}</p>
 </code></body></html>
