@@ -89,6 +89,9 @@ class Faulty_Binary_Bit:
         bit_Loop = self.calculatePercentage(B2,total,strr)
         bit_Function = self.calculatePercentage(B3,total,strr)
 
+        for i in bit_Function:
+            print(bit_Function[i])
+
         self.ShowTheTableOfPercentage(bit_ifElse,bit_Loop,bit_Function)
         
 

@@ -17,6 +17,9 @@ class Ratio_Execution_Time:
             s=''
             for j in range(i[0],i[1]+1):
                 s+= '<p>' + strr[j] + '</p>'
+            if total == 0:
+                E[s] = 0.0
+                continue
             E[s] = (B[i]/total) * 100
         return E
 
@@ -40,7 +43,7 @@ class Ratio_Execution_Time:
         
         stringff += '<tr>'
         stringff += '<th style = "font-size:18;" > Block </th>'
-        stringff += '<th style = "font-size:18;"> Bit Percentage </th>'
+        stringff += '<th style = "font-size:18;"> Time Percentage </th>'
         stringff += '</tr>'
 
         for line in B:
@@ -66,6 +69,8 @@ class Ratio_Execution_Time:
         E_ifElse = self.calculatePercentage(E1,total,strr)
         E_Loop = self.calculatePercentage(E2,total,strr)
         E_Function = self.calculatePercentage(E3,total,strr)
+
+
         self.ShowTheTableOfPercentage(E_ifElse,E_Loop,E_Function)
 
     def ShowTheTableOfPercentage(self,e1,e2,e3):

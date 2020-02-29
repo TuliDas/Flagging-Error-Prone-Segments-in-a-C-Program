@@ -1,52 +1,42 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
 #include <chrono>
 long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}
-#include<stdio.h>
-void fun()
-{auto startTime5 = getTicks();
-    int i=0;
-    i=1;
-    i=2;
-printf("Time = %lld , ( 5 , 11 ) \n", getTicks() - startTime5);    return;
-printf("Time = %lld , ( 5 , 11 ) \n", getTicks() - startTime5);}
-void fun2()
-{auto startTime12 = getTicks();
-  int i ;
-auto startTime15 = getTicks();  for(i=0;i<=100000;i++)
-  {
-      int a = i * 2;
-  }printf("Time = %lld , ( 15 , 18 ) \n", getTicks() - startTime15);
-printf("Time = %lld , ( 12 , 19 ) \n", getTicks() - startTime12);}
+#include <stdio.h>
 int main()
-{ freopen("Output.txt", "w+", stdout);auto startTime20 = getTicks();
-    int i,j,k;
-auto startTime23 = getTicks();    for(i=0; i<5; i++)
+{ freopen("Input.txt", "r+", stdin); freopen("Output.txt", "w+", stdout);auto startTime5 = getTicks();
+    int c, first, last, middle, n, search, array[100];
+    printf("Enter number of elements\n");
+    scanf("%d", &n);
+    printf("Enter %d integers\n", n);
+auto startTime11 = getTicks();    for (c = 0; c < n; c++)
     {
-auto startTime25 = getTicks();        for(j=0; j<10; j++)
-        {
-            int a = i+j;
-        }printf("Time = %lld , ( 25 , 28 ) \n", getTicks() - startTime25);
-    }printf("Time = %lld , ( 23 , 29 ) \n", getTicks() - startTime23);
-auto startTime30 = getTicks();    for(i=0; i<1000000; i++)
+        scanf("%d", &array[c]);
+    }printf("Time = %lld , ( 11 , 14 ) \n", getTicks() - startTime11);
+    printf("Enter value to find\n");
+    scanf("%d", &search);
+    first = 0;
+    last = n - 1;
+    middle = (first+last)/2;
+auto startTime20 = getTicks();    while (first <= last)
     {
-        int a = i+i;
-    }printf("Time = %lld , ( 30 , 33 ) \n", getTicks() - startTime30);
-    k = 10;
-    if (k>0)
-    {auto startTime35 = getTicks();
-auto startTime37 = getTicks();        for(i=0;i<100;i++)
-        {
-             j = j + i;
-        }printf("Time = %lld , ( 37 , 40 ) \n", getTicks() - startTime37);
-printf("Time = %lld , ( 35 , 41 ) \n", getTicks() - startTime35);    }
-    if(k==10)
-    {auto startTime42 = getTicks();
-auto startTime44 = getTicks();        for(i=0;i<500;i++)
-        {
-             j = j + i;
-        }printf("Time = %lld , ( 44 , 47 ) \n", getTicks() - startTime44);
-printf("Time = %lld , ( 42 , 48 ) \n", getTicks() - startTime42);    }
-    fun();
-    fun2();
-printf("Time = %lld , ( 20 , 52 ) \n", getTicks() - startTime20);    return 0;
-printf("Time = %lld , ( 20 , 52 ) \n", getTicks() - startTime20);}
+        if (array[middle] < search)
+        {auto startTime22 = getTicks();
+            first = middle + 1;
+printf("Time = %lld , ( 22 , 25 ) \n", getTicks() - startTime22);        }
+        else if (array[middle] == search)
+        {auto startTime26 = getTicks();
+            printf("%d found at location %d.\n", search, middle+1);
+            break;
+printf("Time = %lld , ( 26 , 30 ) \n", getTicks() - startTime26);        }
+        else
+        {auto startTime31 = getTicks();
+            last = middle - 1;
+printf("Time = %lld , ( 31 , 34 ) \n", getTicks() - startTime31);        }
+        middle = (first + last)/2;
+    }printf("Time = %lld , ( 20 , 36 ) \n", getTicks() - startTime20);
+    if (first > last)
+    {auto startTime37 = getTicks();
+        printf("Not found! %d isn't present in the list.\n", search);
+printf("Time = %lld , ( 37 , 40 ) \n", getTicks() - startTime37);    }
+printf("Time = %lld , ( 5 , 42 ) \n", getTicks() - startTime5);    return 0;
+printf("Time = %lld , ( 5 , 42 ) \n", getTicks() - startTime5);}

@@ -80,8 +80,9 @@ class Detect_Sensitive_Code:
 
             elif(done == 1):
                 done+=1
-                fff = 'freopen("Output.txt", "w+", stdout);'
-                f.write(line + ' ' + fff)
+                ffi = 'freopen("Input.txt", "r+", stdin);'
+                ffo = 'freopen("Output.txt", "w+", stdout);'
+                f.write(line + ' ' + ffi + ' '+ ffo)
                 f.write('\n')
 
             else:
@@ -831,7 +832,7 @@ class Detect_Sensitive_Code:
         return ifElseBit,loopBit,funBit
 
 def main():
-    obj = Detect_Sensitive_Code("EDCproneCode2.cpp")
+    obj = Detect_Sensitive_Code("test.c")
 
 if __name__ == '__main__':
     main()

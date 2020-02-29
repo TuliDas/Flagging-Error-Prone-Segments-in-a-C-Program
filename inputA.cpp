@@ -1,52 +1,42 @@
 static int global_loop_id = 0, global_ifelse_id = 0, global_function_id = 0;
 #include <chrono>
 long long getTicks(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();}
-#include<stdio.h>
-void fun()
-{
-    int i=0;
-    i=1;
-    i=2;
-    return;
-}
-void fun2()
-{
-  int i ;
-  for(i=0;i<=100000;i++)
-  {
-      int a = i * 2;
-  }
-}
+#include <stdio.h>
 int main()
-{ freopen("Output.txt", "w+", stdout);
-    int i,j,k;
-    for(i=0; i<5; i++)
+{ freopen("Input.txt", "r+", stdin); freopen("Output.txt", "w+", stdout);
+    int c, first, last, middle, n, search, array[100];
+    printf("Enter number of elements\n");
+    scanf("%d", &n);
+    printf("Enter %d integers\n", n);
+    for (c = 0; c < n; c++)
     {
-        for(j=0; j<10; j++)
+        scanf("%d", &array[c]);
+    }
+    printf("Enter value to find\n");
+    scanf("%d", &search);
+    first = 0;
+    last = n - 1;
+    middle = (first+last)/2;
+    while (first <= last)
+    {
+        if (array[middle] < search)
         {
-            int a = i+j;
+            first = middle + 1;
         }
-    }
-    for(i=0; i<1000000; i++)
-    {
-        int a = i+i;
-    }
-    k = 10;
-    if (k>0)
-    {
-        for(i=0;i<100;i++)
+        else if (array[middle] == search)
         {
-             j = j + i;
+            printf("%d found at location %d.\n", search, middle+1);
+            break;
         }
-    }
-    if(k==10)
-    {
-        for(i=0;i<500;i++)
+        else
         {
-             j = j + i;
+            last = middle - 1;
         }
+        middle = (first + last)/2;
     }
-    fun();
-    fun2();
+    if (first > last)
+    {
+        printf("Not found! %d isn't present in the list.\n", search);
+    }
     return 0;
 }
